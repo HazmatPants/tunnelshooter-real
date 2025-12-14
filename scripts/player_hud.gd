@@ -1,37 +1,24 @@
 extends CanvasLayer
 
 @onready var crosshair = $Crosshair
-@onready var reload_progress = $Crosshair/TextureRect/ReloadProgress
 var crosshair_size: float = 512.0
 
 func _process(_delta: float) -> void:
 	var inspecting = GLOBAL.player.gun_controller.inspecting
 	if GLOBAL.player.gun != null:
 		var gun = GLOBAL.player.gun
+		var equipped_gun = GLOBAL.player.equipped_gun
 		var title_text := ""
 		var desc_text := ""
 
-		match GLOBAL.player.equipped_gun:
-			GLOBAL.GUNS.GI_MK_1:
-				title_text = "GI Mk. 1"
-				desc_text = "A .45 caliber handgun designed by Grigga Industries. Higher recoil compared to 9x19mm, but more powerful and has a light trigger for high fire rate. Features glow-in-the-dark iron sights for low-light encounters.\n\n"
-				desc_text += "Caliber: .45 GI\n"
-			GLOBAL.GUNS.OGON_50:
-				title_text = "Ogon .50"
-				desc_text = "A powerful .50 AE handgun designed by Ogon. Has a lot of kick and a heavy trigger, but extreme stopping power.\n\n"
-				desc_text += "Caliber: .50 AE\n"
-			GLOBAL.GUNS.GI_MK_1_AUTO:
-				title_text = "GI Mk. 1 Auto Mod"
-				desc_text = "A modified GI Mk. 1 handgun with the disconnector removed, allowing full auto fire. Has a large muzzle brake to help with the immense recoil.\n\n"
-				desc_text += "Caliber: .45 GI\n"
-			GLOBAL.GUNS.OGON_50_AUTO:
-				title_text = "Ogon .50 Auto Mod"
-				desc_text = "\"This was a mistake.\"\n\nAn absurd modification of the Ogon .50 with the disconnector removed, allowing full auto fire. Fitted with an extended mag and a foregrip in a futile attempt at recoil control.\n\n"
-				desc_text += "Caliber: .50 AE\n"
+		title_text = GLOBAL.GUN_NAMES[equipped_gun]
+		desc_text = GLOBAL.GUN_DESCS[equipped_gun]
 
+		desc_text += "Caliber: %s\n" % GLOBAL.GUN_CALS[equipped_gun]
 		desc_text += "Trigger travel time: %sms\n" % int(gun.trigger_time * 1000)
 		desc_text += "Fire rate: ~%s RPM\n" % int(60.0 / gun.trigger_time)
-		desc_text += "Capacity: %s + 1\n" % gun.max_ammo
+		desc_text += "Capacity: %s" % gun.max_ammo
+		desc_text += " + 1\n" if gun.plus_one else "\n"
 		desc_text += "Recoil: %.1f°\n" % rad_to_deg(gun.recoil_amount)
 
 		$Inspect/VBoxContainer/Title.text = title_text
@@ -69,6 +56,8 @@ func _process(_delta: float) -> void:
 	crosshair_tex.position = -crosshair_tex.size / 2
 	crosshair_tex.pivot_offset = crosshair_tex.size / 2
 
-	reload_progress.scale = crosshair_tex.size / 512
-
 	crosshair.modulate.a = lerp(crosshair.modulate.a, crosshair_modulate_a, 0.2)
+
+	$ReserveLabel.text = "Reserve: %s" % GLOBAL.player.reserve_ammo
+	if GLOBAL.player.gun:
+		$AmmoLabel.text = "Ammo: %s" % GLOBAL.player.gun.ammo

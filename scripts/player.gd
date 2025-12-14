@@ -14,6 +14,7 @@ extends CharacterBody3D
 @export var viewbob_amplitude: float = 0.01
 
 @export var equipped_gun: GLOBAL.GUNS = GLOBAL.GUNS.NONE
+@export var reserve_ammo: int = 90
 
 var mouse_delta := Vector2.ZERO
 var camera_target_rotation := Vector3.ZERO
@@ -48,8 +49,14 @@ const SFX_FOOTSTEP: Dictionary = {
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
-		mouse_delta += event.relative
-
+		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+			mouse_delta += event.relative
+	if event is InputEventKey:
+		if event.keycode == KEY_ESCAPE and event.pressed:
+			if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			else:
+				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
@@ -213,15 +220,10 @@ func _physics_process(delta: float) -> void:
 			else:
 				can_reload = gun.ammo < gun.max_ammo
 			if can_reload:
-				gun.reload()
-				await gun.reload_finished
-				if gun.ammo == 0:
-					gun.ammo = gun.max_ammo
-				else:
-					gun.ammo = gun.max_ammo + 1
-
-	if gun_controller.reloading:
-		hud.reload_progress.value += delta
+				can_reload = reserve_ammo > 0
+				if can_reload:
+					gun.reload()
+					await gun.reload_finished
 
 	if Input.is_action_just_pressed("inspect"):
 		gun_controller.inspecting = !gun_controller.inspecting
@@ -233,34 +235,36 @@ func _physics_process(delta: float) -> void:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 	if Input.is_action_pressed("lmb") and not gun_controller.reloading and not gun_controller.inspecting:
-		if gun != null:
-			trigger_time += delta
-			if trigger_time > gun.trigger_time and not trigger_pulled:
-				GLOBAL.playsound3d(preload("res://assets/audio/sfx/weapons/trigger_down.ogg"), global_position, 0.1, randf_range(0.85, 0.95))
-			if trigger_time > gun.trigger_time and not shot:
-				trigger_pulled = true
-				if not gun.full_auto:
-					shot = true
-				if gun.ammo > 0:
-					camera_target_rotation.x += gun.recoil_amount
-					gun_controller.recoil += gun.recoil_amount
-					gun_controller.punch.x += gun.gunpunch
-					gun_controller.punch_target += Vector3(
-						randf_range(-0.01, 0.01),
-						randf_range(-0.01, 0.01),
-						randf_range(-0.025, 0.025)
-					)
-					if gun != null:
-						if gun.has_method("shoot"):
-							gun.shoot()
-					trigger_time = 0.0
+		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+			if gun != null:
+				trigger_time += delta
+				if trigger_time > gun.trigger_time and not trigger_pulled:
+					GLOBAL.playsound3d(preload("res://assets/audio/sfx/weapons/trigger_down.ogg"), global_position, 0.1, randf_range(0.85, 0.95))
+				if trigger_time > gun.trigger_time and not shot:
+					trigger_pulled = true
+					if not gun.full_auto:
+						shot = true
+					if gun.ammo > 0:
+						camera_target_rotation.x += gun.recoil_amount
+						gun_controller.recoil += gun.recoil_amount
+						gun_controller.punch.x += gun.gunpunch
+						gun_controller.punch_target += Vector3(
+							randf_range(-0.01, 0.01),
+							randf_range(-0.01, 0.01),
+							randf_range(-0.025, 0.025)
+						)
+						if gun != null:
+							if gun.has_method("shoot"):
+								gun.shoot()
+						trigger_time = 0.0
 
 	if Input.is_action_just_released("lmb"):
-		if gun != null:
-			trigger_pulled = false
-			shot = false
-			trigger_time = 0.0
-			GLOBAL.playsound3d(preload("res://assets/audio/sfx/weapons/trigger_down.ogg"), global_position, 0.05, randf_range(0.95, 1.05))
+		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+			if gun != null:
+				trigger_pulled = false
+				shot = false
+				trigger_time = 0.0
+				GLOBAL.playsound3d(preload("res://assets/audio/sfx/weapons/trigger_down.ogg"), global_position, 0.05, randf_range(0.95, 1.05))
 
 	mouse_delta = Vector2.ZERO
 	last_viewbob_sine = viewbob_sine

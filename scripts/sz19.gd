@@ -8,9 +8,9 @@ extends Node3D
 @export var plus_one: bool = false
 @export var recoil_amount: float = 0.1
 @export var recoil_recovery: float = 0.6
-@export var trigger_time: float = 0.05
+@export var trigger_time: float = 0.075
 @export var viewpunch: float = 0.2
-@export var gunpunch: float = 0.33
+@export var gunpunch: float = 0.2
 @export var bullet_energy: float = 20.0
 @export var bullet_penetration: float = 5.0
 
@@ -53,7 +53,7 @@ func shoot():
 	var casing: RigidBody3D = preload("res://scenes/bullet_casing.tscn").instantiate()
 	get_tree().current_scene.add_child(casing)
 	casing.global_transform = $CasingPos.global_transform
-	var c_vel: Vector3 = casing.transform.basis.x.normalized()
+	var c_vel := Vector3.UP
 	c_vel += Vector3(
 		randf_range(-0.1, 0.1),
 		randf_range(-0.1, 0.1),
@@ -86,21 +86,29 @@ func apply_hard_punch(dir_min: Vector3, dir_max: Vector3):
 	)
 
 func reload():
-	var animation_time = anim.get_animation("reload_1").get_length() * (max_ammo - ammo)
-	if ammo == 0:
-		animation_time += anim.get_animation("prime").get_length() * 2
-	GLOBAL.player.hud.reload_progress.max_value = animation_time
 	GLOBAL.player.gun_controller.reloading = true
 	if ammo > 0:
 		anim.play("slideback")
 		await anim.animation_finished
-	while ammo < max_ammo:
-		anim.play("reload_1")
-		await anim.animation_finished
-		ammo += 1
+	while ammo < max_ammo and GLOBAL.player.reserve_ammo > 0:
+		if ammo > max_ammo - 8 or GLOBAL.player.reserve_ammo < 8:
+			while ammo < max_ammo:
+				anim.play("reload_1")
+				await anim.animation_finished
+				ammo += 1
+				GLOBAL.player.reserve_ammo -= 1
+				if !GLOBAL.player.reserve_ammo > 0:
+					break
+		elif GLOBAL.player.reserve_ammo >= 8:
+			while ammo <= max_ammo - 8:
+				anim.play("reload_clip")
+				ammo += 8
+				GLOBAL.player.reserve_ammo -= 8
+				await anim.animation_finished
+				if !GLOBAL.player.reserve_ammo > 8:
+					break
 	await get_tree().create_timer(0.1).timeout
 	anim.play("prime")
 	await anim.animation_finished
 	GLOBAL.player.gun_controller.reloading = false
-	GLOBAL.player.hud.reload_progress.value = 0
 	reload_finished.emit()

@@ -1,0 +1,490 @@
+[gd_scene load_steps=28 format=3 uid="uid://2rfhwwu7dd13"]
+
+[ext_resource type="Script" uid="uid://d20yi1eqkfl88" path="res://scripts/sz19.gd" id="1_3i0ud"]
+[ext_resource type="AudioStream" uid="uid://l11uylvhcg71" path="res://assets/audio/sfx/weapons/ogon19/mag2.ogg" id="2_y0xko"]
+[ext_resource type="AudioStream" uid="uid://3hddlm8pgkt8" path="res://assets/audio/sfx/weapons/ogon19/mag1.ogg" id="3_5gao5"]
+[ext_resource type="AudioStream" uid="uid://c73cnx85c6ixk" path="res://assets/audio/sfx/weapons/foley2.ogg" id="4_5arli"]
+[ext_resource type="AudioStream" uid="uid://bnm8iechkk3fg" path="res://assets/audio/sfx/weapons/ogon19/clip_in.ogg" id="5_i5fa5"]
+[ext_resource type="AudioStream" uid="uid://de7iuji0vw84q" path="res://assets/audio/sfx/weapons/ogon19/clip.ogg" id="6_e2f4b"]
+[ext_resource type="AudioStream" uid="uid://d2857bg4ur68c" path="res://assets/audio/sfx/weapons/ogon19/clip_throw.wav" id="7_4tnvf"]
+[ext_resource type="AudioStream" uid="uid://cuy8t2bbxgfnb" path="res://assets/audio/sfx/weapons/ogon19/ogon19_slideback.ogg" id="8_oetxp"]
+[ext_resource type="Material" uid="uid://bmcbupdttg412" path="res://assets/materials/gun_steel.tres" id="9_u3n4r"]
+[ext_resource type="PackedScene" uid="uid://b358dp85skiui" path="res://scenes/bullet_9x19.tscn" id="10_boo36"]
+
+[sub_resource type="Animation" id="Animation_buff3"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slide")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.125, -0.145)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BulletCasing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0.10574759, 0.00867527)
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BulletCasing:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Clip:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "position_3d"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Clip/Rounds")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = PackedFloat32Array(0, 1, 0, 0, 0)
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Clip:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/6/type = "position_3d"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Clip")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = PackedFloat32Array(0, 1, 0, 0.3, 0.02)
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Clip/Rounds:visible")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_1e3ry"]
+resource_name = "prime"
+length = 0.1
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slide")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.125, 0, 0.06666664, 1, 0, 0.125, -0.145, 0.1, 1, 0, 0.125, -0.145)
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.06666667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [ExtResource("2_y0xko"), 1.0],
+"method": &"playsound"
+}]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.033333335),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [Vector3(-0.3, -0.05, 0), Vector3(-0.1, 0.05, 0)],
+"method": &"apply_hard_punch"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_igbvm"]
+resource_name = "reload_1"
+length = 0.4
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"values": []
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.16666669, 0.20000005),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [ExtResource("3_5gao5"), 1.0],
+"method": &"playsound"
+}, {
+"args": [Vector3(-0.01, 0, 0), Vector3(-0.05, 0, 0)],
+"method": &"apply_punch"
+}]
+}
+tracks/2/type = "position_3d"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BulletCasing")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 0, 0.106, 1, 0.23333333, 1, 0, 0.3, 0, 0.33333337, 1, 0, 0.1, 0)
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("BulletCasing:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_43cwr"]
+resource_name = "reload_clip"
+length = 2.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.7, 1.0666666, 1.6666666),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"values": [{
+"args": [ExtResource("4_5arli"), 1.0],
+"method": &"playsound"
+}, {
+"args": [ExtResource("5_i5fa5"), 1.0],
+"method": &"playsound"
+}, {
+"args": [ExtResource("6_e2f4b"), 1.0],
+"method": &"playsound"
+}, {
+"args": [ExtResource("7_4tnvf"), 1.0],
+"method": &"playsound"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BulletCasing:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Clip:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.8, 1.9666667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, true, false]
+}
+tracks/3/type = "position_3d"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Clip")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = PackedFloat32Array(0, 1, 0, 0.106, 1, 0.16666669, 1, 0, 0.4, 0, 0.43333334, 1, 0, 0.4, 0, 0.51647025, 1, 0, 0.42, 0, 0.66666675, 1, 0, 0.29, 0.015, 0.70000005, 1, 0, 0.3, 0.015, 0.76666677, 1, 0, 0.3, 0.015, 1.5333333, 1, 0, 0.3, 0.015, 1.6, 1, 0, 0.3, 0.015, 1.7, 1, 0, 0.4, 0.015, 1.8000001, 1, 0, 0.4, 0.015, 2, 1, 2, 0.36, 2)
+tracks/4/type = "position_3d"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Clip/Rounds")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.36666667, 1, 0, 0, 0, 1.0333333, 1, 0, 0, 0, 1.2, 1, 0, -0.32, 0)
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Clip:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.16666669, 0.36666667, 0.66666675, 1.7000002, 1.9666668),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(-0.12206832, 0, 0), Vector3(-0.12206832, 0, 0), Vector3(1.8325957, -0.69115037, -1.3980087)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Clip/Rounds:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 1.0666666, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, true, false]
+}
+tracks/7/type = "method"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0.70000005, 1.0666666),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [Vector3(-0.01, 0, 0), Vector3(-0.05, 0, 0)],
+"method": &"apply_punch"
+}, {
+"args": [Vector3(-0.01, 0, 0), Vector3(-0.05, 0, 0)],
+"method": &"apply_punch"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_8rggj"]
+resource_name = "slideback"
+length = 0.45
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slide")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0.099999994, 1, 0, 0.125, -0.145, 0.13333333, 1, 0, 0.125, -0.145, 0.26666665, 1, 0, 0.125, -0.05, 0.36666667, 1, 0, 0.125, -0.05)
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [ExtResource("8_oetxp"), 1.0],
+"method": &"playsound"
+}]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.13333333),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [Vector3(-0.3, -0.05, 0), Vector3(-0.1, 0.05, 0)],
+"method": &"apply_hard_punch"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1e3ry"]
+_data = {
+&"RESET": SubResource("Animation_buff3"),
+&"prime": SubResource("Animation_1e3ry"),
+&"reload_1": SubResource("Animation_igbvm"),
+&"reload_clip": SubResource("Animation_43cwr"),
+&"slideback": SubResource("Animation_8rggj")
+}
+
+[sub_resource type="BoxMesh" id="BoxMesh_ngd2f"]
+material = ExtResource("9_u3n4r")
+size = Vector3(0.06, 0.295, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_igbvm"]
+material = ExtResource("9_u3n4r")
+size = Vector3(0.05, 0.295, 0.09)
+
+[sub_resource type="BoxMesh" id="BoxMesh_buff3"]
+material = ExtResource("9_u3n4r")
+size = Vector3(0.06, 0.06, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_88qyl"]
+material = ExtResource("9_u3n4r")
+size = Vector3(0.01, 0.06, 0.005)
+
+[sub_resource type="TorusMesh" id="TorusMesh_1r6mc"]
+material = ExtResource("9_u3n4r")
+inner_radius = 0.04
+outer_radius = 0.05
+rings = 6
+ring_segments = 3
+
+[sub_resource type="BoxMesh" id="BoxMesh_4hq71"]
+material = ExtResource("9_u3n4r")
+size = Vector3(0.06, 0.06, 0.5)
+
+[sub_resource type="PrismMesh" id="PrismMesh_br670"]
+material = ExtResource("9_u3n4r")
+size = Vector3(0.045, 0.02, 0.03)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1e3ry"]
+material = ExtResource("9_u3n4r")
+size = Vector3(0.03, 0.02, 0.02)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_igbvm"]
+material = ExtResource("9_u3n4r")
+top_radius = 0.025
+bottom_radius = 0.025
+height = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_op5ft"]
+metallic = 1.0
+roughness = 0.61
+
+[sub_resource type="BoxMesh" id="BoxMesh_akofg"]
+material = SubResource("StandardMaterial3D_op5ft")
+size = Vector3(0.05, 0.315, 0.01)
+
+[node name="Ogon 19" type="Node3D"]
+script = ExtResource("1_3i0ud")
+full_auto = true
+recoil_amount = 0.05
+viewpunch = 0.1
+gunpunch = 0.025
+max_ammo = 24
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_1e3ry")
+}
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.9894401, 0.14494339, 0, -0.14494339, 0.9894401, 0, -0.03557404, 0.009040136)
+mesh = SubResource("BoxMesh_ngd2f")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.9894401, 0.14494339, 0, -0.14494339, 0.9894401, 0, -0.24279001, 0.03941882)
+mesh = SubResource("BoxMesh_igbvm")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.98921365, -0.14648017, 0, 0.14648017, 0.98921365, 0, -0.08008977, -0.26372805)
+mesh = SubResource("BoxMesh_igbvm")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.085, -0.14375493)
+mesh = SubResource("BoxMesh_buff3")
+
+[node name="Trigger" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.98478943, -0.17375128, 0, 0.17375128, 0.98478943, 0, 0.04934276, -0.06977304)
+mesh = SubResource("BoxMesh_88qyl")
+
+[node name="TriggerGuard" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.371139e-08, -0.9999999, 0, 1, -4.3711385e-08, 0, 0, 0, 0.9999999, 0, 0.037683558, -0.06895141)
+mesh = SubResource("TorusMesh_1r6mc")
+
+[node name="Slide" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, -0.145)
+mesh = SubResource("BoxMesh_4hq71")
+
+[node name="Front" type="MeshInstance3D" parent="Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.038, -0.228)
+mesh = SubResource("PrismMesh_br670")
+skeleton = NodePath("../..")
+
+[node name="RearLeft" type="MeshInstance3D" parent="Slide"]
+transform = Transform3D(-3.7855173e-08, -0.5, -0.8660254, -2.1855694e-08, 0.8660254, -0.5, 1, 0, -4.371139e-08, -0.02, 0.03364697, 0.224)
+mesh = SubResource("BoxMesh_1e3ry")
+skeleton = NodePath("../..")
+
+[node name="RearRight" type="MeshInstance3D" parent="Slide"]
+transform = Transform3D(-3.7855173e-08, 0.5, -0.8660254, 2.1855694e-08, 0.8660254, 0.5, 1, 0, -4.371139e-08, 0.02, 0.03364697, 0.224)
+mesh = SubResource("BoxMesh_1e3ry")
+skeleton = NodePath("../..")
+
+[node name="CasingPos" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.14698166, -0.07033517)
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.125, -0.16051233)
+mesh = SubResource("CylinderMesh_igbvm")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, -0.4061338)
+target_position = Vector3(0, 0, -100)
+collide_with_areas = true
+
+[node name="BulletCasing" parent="." instance=ExtResource("10_boo36")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.10574759, 0.00867527)
+visible = false
+
+[node name="Clip" type="Node3D" parent="."]
+transform = Transform3D(0.7999999, 0, 0, 0, 0.7999998, 0, 0, 0, 0.79999995, 0, 0.3, 0.02)
+visible = false
+
+[node name="Rounds" type="Node3D" parent="Clip"]
+
+[node name="BulletCasing" parent="Clip/Rounds" instance=ExtResource("10_boo36")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.10574759, -0.03809941)
+
+[node name="BulletCasing2" parent="Clip/Rounds" instance=ExtResource("10_boo36")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.065, -0.03809941)
+
+[node name="BulletCasing3" parent="Clip/Rounds" instance=ExtResource("10_boo36")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.024, -0.03809941)
+
+[node name="BulletCasing4" parent="Clip/Rounds" instance=ExtResource("10_boo36")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.017, -0.03809941)
+
+[node name="BulletCasing5" parent="Clip/Rounds" instance=ExtResource("10_boo36")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.058, -0.03809941)
+
+[node name="BulletCasing6" parent="Clip/Rounds" instance=ExtResource("10_boo36")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.099, -0.03809941)
+
+[node name="BulletCasing7" parent="Clip/Rounds" instance=ExtResource("10_boo36")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.14, -0.03809941)
+
+[node name="BulletCasing8" parent="Clip/Rounds" instance=ExtResource("10_boo36")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.181, -0.03809941)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Clip"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.031103501, 0)
+mesh = SubResource("BoxMesh_akofg")

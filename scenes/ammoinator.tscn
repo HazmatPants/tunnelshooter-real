@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://tc5v8c60p5fe"]
+
+[ext_resource type="Script" uid="uid://cdf85ie50xljs" path="res://scripts/ammoinator.gd" id="1_cnd8i"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cnd8i"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_78emf"]
+transparency = 1
+albedo_color = Color(0, 0.60784316, 0, 0.5372549)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pq0w3"]
+material = SubResource("StandardMaterial3D_78emf")
+
+[node name="Ammoinator" type="Node3D"]
+script = ExtResource("1_cnd8i")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_cnd8i")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_pq0w3")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+text = "Touch me for ammo"
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

@@ -75,28 +75,29 @@ func shoot(ray, bullet_energy, penetration_power):
 		var collider = hit.collider
 
 		# Damage
-		if collider.owner.has_method("_hit_by_bullet"):
-			collider.owner._hit_by_bullet(collider)
-		if collider.has_method("_hit_by_bullet"):
-			collider._hit_by_bullet(collider)
+		if collider:
+			if collider.owner.has_method("_hit_by_bullet"):
+				collider.owner._hit_by_bullet(collider)
+			if collider.has_method("_hit_by_bullet"):
+				collider._hit_by_bullet(collider)
 
-		place_decal(hit_pos, normal, collider)
+			place_decal(hit_pos, normal, collider)
 
-		var thickness = get_penetration_thickness(hit_pos, direction, collider)
+			var thickness = get_penetration_thickness(hit_pos, direction, collider)
 
-		var energy_cost = thickness * 10
+			var energy_cost = thickness * 10
 
-		print("Bullet hit:")
-		print("	Energy cost: ", energy_cost)
-		print("	Bullet energy: ", energy + penetration_power)
-		print("	Hit Node: ", collider)
+			print("Bullet hit:")
+			print("	Energy cost: ", energy_cost)
+			print("	Bullet energy: ", energy + penetration_power)
+			print("	Hit Node: ", collider)
 
-		if energy + penetration_power > energy_cost:
-			# Penetrate
-			print("	penetrated")
-			energy -= energy_cost
-			origin = hit_pos + direction * (thickness + 0.5)
-			continue
+			if energy + penetration_power > energy_cost:
+				# Penetrate
+				print("	penetrated")
+				energy -= energy_cost
+				origin = hit_pos + direction * (thickness + 0.5)
+				continue
 
 		# Bullet stopped
 		break

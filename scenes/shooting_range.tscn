@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://db3x6hhv5s5yi"]
+[gd_scene load_steps=33 format=3 uid="uid://db3x6hhv5s5yi"]
 
 [ext_resource type="Script" uid="uid://byt425rt380ht" path="res://scripts/shooting_range.gd" id="1_bk2xl"]
 [ext_resource type="PackedScene" uid="uid://cgjj2bmatef67" path="res://scenes/player.tscn" id="1_pxwje"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dyqg6qhslbh4m" path="res://scenes/circle_target.tscn" id="5_qapxh"]
 [ext_resource type="FontFile" uid="uid://dcix7ee6kybk6" path="res://assets/fonts/JetBrainsMono-Bold.ttf" id="5_xbf1c"]
 [ext_resource type="PackedScene" uid="uid://bet7nsgnr3kr6" path="res://scenes/score_counter.tscn" id="6_r88yb"]
+[ext_resource type="PackedScene" uid="uid://tc5v8c60p5fe" path="res://scenes/ammoinator.tscn" id="9_mt837"]
 
 [sub_resource type="Environment" id="Environment_ig7tw"]
 ambient_light_source = 1
@@ -387,3 +388,6 @@ mesh = SubResource("BoxMesh_bk2xl")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
 shape = SubResource("BoxShape3D_mt837")
+
+[node name="Ammoinator" parent="." instance=ExtResource("9_mt837")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.750885, 0.8760892, 14.803541)

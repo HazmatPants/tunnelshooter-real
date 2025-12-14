@@ -5,7 +5,7 @@ extends Node3D
 @onready var slide: MeshInstance3D = $Slide
 
 @export var full_auto: bool = false
-@export var plus_one: bool = false
+@export var plus_one: bool = true
 @export var recoil_amount: float = 0.1
 @export var recoil_recovery: float = 0.6
 @export var trigger_time: float = 0.05
@@ -86,10 +86,6 @@ func apply_hard_punch(dir_min: Vector3, dir_max: Vector3):
 	)
 
 func reload():
-	var animation_time = anim.get_animation("reload").get_length()
-	if ammo == 0:
-		animation_time += anim.get_animation("prime").get_length() * 2
-	GLOBAL.player.hud.reload_progress.max_value = animation_time
 	GLOBAL.player.gun_controller.reloading = true
 	anim.play("reload")
 	await anim.animation_finished
@@ -98,5 +94,13 @@ func reload():
 		anim.play("prime")
 		await anim.animation_finished
 	GLOBAL.player.gun_controller.reloading = false
-	GLOBAL.player.hud.reload_progress.value = 0
 	reload_finished.emit()
+	if GLOBAL.player.reserve_ammo < max_ammo:
+		ammo += GLOBAL.player.reserve_ammo
+		GLOBAL.player.reserve_ammo = 0
+	elif ammo == 0:
+		GLOBAL.player.reserve_ammo -= max_ammo - ammo
+		ammo = max_ammo
+	else:
+		GLOBAL.player.reserve_ammo -= (max_ammo + 1) - ammo
+		ammo = max_ammo + 1
