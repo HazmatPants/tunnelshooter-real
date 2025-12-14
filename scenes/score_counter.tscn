@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=3 uid="uid://bet7nsgnr3kr6"]
+
+[ext_resource type="Script" uid="uid://dqnh2bujcrk8i" path="res://scripts/score_counter.gd" id="1_kry78"]
+[ext_resource type="Material" uid="uid://bmy4ixxlbex4u" path="res://assets/materials/default.tres" id="2_lqfp5"]
+[ext_resource type="Material" uid="uid://bmcbupdttg412" path="res://assets/materials/gun_steel.tres" id="3_2qpgf"]
+[ext_resource type="FontFile" uid="uid://bnpi3xkay5eby" path="res://assets/fonts/hd44780a00-5x8.ttf" id="4_vbwnf"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_qapxh"]
+material = ExtResource("2_lqfp5")
+size = Vector3(0.5, 0.3, 0.25)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ca51o"]
+material = ExtResource("3_2qpgf")
+size = Vector3(0.45, 0.25, 0.25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ca51o"]
+size = Vector3(0.5, 0.3, 0.25)
+
+[node name="ScoreCounter" type="StaticBody3D"]
+transform = Transform3D(-1, 0, -8.742278e-08, 2.262668e-08, 0.9659258, -0.25881904, 8.444392e-08, -0.25881904, -0.9659258, 0, 0, 0)
+script = ExtResource("1_kry78")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_qapxh")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.001)
+mesh = SubResource("BoxMesh_ca51o")
+
+[node name="Label3D" type="Label3D" parent="MeshInstance3D2"]
+transform = Transform3D(-0.25, 0, -3.774895e-08, 0, 0.25, 0, 3.774895e-08, 0, -0.25, 0.2, 0.04, -0.126)
+modulate = Color(1, 0, 0, 1)
+text = "999"
+font = ExtResource("4_vbwnf")
+font_size = 128
+horizontal_alignment = 0
+
+[node name="Label3D2" type="Label3D" parent="."]
+transform = Transform3D(-0.055, 2.2275253e-30, -8.304769e-09, 0, 0.055, 1.4752234e-23, 8.304769e-09, 1.4752234e-23, -0.055, 0.21, -0.095, -0.127)
+modulate = Color(1, 0, 0, 1)
+text = "SHOOT TO RESET"
+font = ExtResource("4_vbwnf")
+font_size = 128
+horizontal_alignment = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_ca51o")

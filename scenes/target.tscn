@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=3 uid="uid://cxgydca3xwsmc"]
+
+[ext_resource type="Script" uid="uid://cr3dxbpx06kxp" path="res://scripts/target.gd" id="1_b5a2r"]
+[ext_resource type="Material" uid="uid://bmy4ixxlbex4u" path="res://assets/materials/default.tres" id="2_nlbrr"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_fj3q4"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_xbf1c"]
+material = ExtResource("2_nlbrr")
+radius = 0.51
+height = 1.01
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xbf1c"]
+height = 1.5
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_qapxh"]
+material = ExtResource("2_nlbrr")
+
+[node name="Target" type="Node3D"]
+script = ExtResource("1_b5a2r")
+
+[node name="Head" type="Area3D" parent="."]
+collision_layer = 3
+collision_mask = 3
+metadata/hit_zone = &"head"
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_fj3q4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("SphereMesh_xbf1c")
+skeleton = NodePath("../..")
+
+[node name="Label3D" type="Label3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.515, -0.51)
+text = "8"
+
+[node name="Body" type="Area3D" parent="."]
+collision_layer = 3
+collision_mask = 3
+metadata/hit_zone = &"body"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+shape = SubResource("CapsuleShape3D_xbf1c")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Body"]
+mesh = SubResource("CapsuleMesh_qapxh")
+skeleton = NodePath("../..")
+
+[node name="Label3D" type="Label3D" parent="Body"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, -0.5)
+text = "5"

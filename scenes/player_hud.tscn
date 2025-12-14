@@ -1,0 +1,105 @@
+[gd_scene load_steps=7 format=3 uid="uid://vgep1fr31sdd"]
+
+[ext_resource type="Script" uid="uid://io261lnktacx" path="res://scripts/player_hud.gd" id="1_er5qu"]
+[ext_resource type="FontFile" uid="uid://dcix7ee6kybk6" path="res://assets/fonts/JetBrainsMono-Bold.ttf" id="2_iraov"]
+
+[sub_resource type="Gradient" id="Gradient_iraov"]
+offsets = PackedFloat32Array(0.6, 0.62666667, 0.64666665)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_er5qu"]
+gradient = SubResource("Gradient_iraov")
+width = 512
+height = 512
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_er5qu"]
+offsets = PackedFloat32Array(0.6086956, 0.65217394)
+colors = PackedColorArray(1, 1, 1, 1, 0.15, 0.15, 0.15, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_or0tx"]
+gradient = SubResource("Gradient_er5qu")
+width = 512
+height = 512
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[node name="PlayerHUD" type="CanvasLayer"]
+script = ExtResource("1_er5qu")
+
+[node name="Inspect" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="Inspect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.39215687)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Inspect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.67300004
+anchor_top = 0.080000006
+anchor_right = 0.67300004
+anchor_bottom = 0.082
+offset_left = 0.34899902
+offset_top = 1.159996
+offset_right = 182.34973
+offset_bottom = 72.864
+
+[node name="Title" type="Label" parent="Inspect/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_iraov")
+theme_override_font_sizes/font_size = 30
+text = "This Is a Title"
+
+[node name="Description" type="Label" parent="Inspect/VBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_iraov")
+text = "This Is a Description"
+autowrap_mode = 3
+
+[node name="Crosshair" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="Crosshair"]
+layout_mode = 0
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = 256.0
+scale = Vector2(0.1, 0.1)
+pivot_offset = Vector2(256, 256)
+texture = SubResource("GradientTexture2D_er5qu")
+
+[node name="ReloadProgress" type="TextureProgressBar" parent="Crosshair/TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = 256.0
+pivot_offset = Vector2(256, 256)
+max_value = 1.0
+step = 0.0
+fill_mode = 4
+texture_progress = SubResource("GradientTexture2D_or0tx")

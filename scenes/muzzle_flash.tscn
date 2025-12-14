@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ceh6bj60l2i8o"]
+
+[ext_resource type="Script" uid="uid://c3e2k3ukio2n7" path="res://scripts/muzzle_flash.gd" id="1_r2kf7"]
+
+[node name="MuzzleFlash" type="OmniLight3D"]
+script = ExtResource("1_r2kf7")

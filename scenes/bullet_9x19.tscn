@@ -1,0 +1,70 @@
+[gd_scene load_steps=10 format=3 uid="uid://b358dp85skiui"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pq6cw"]
+albedo_color = Color(1, 1, 0, 1)
+metallic = 1.0
+roughness = 0.4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6gkip"]
+material = SubResource("StandardMaterial3D_pq6cw")
+top_radius = 0.025
+bottom_radius = 0.025
+height = 0.08
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6gkip"]
+albedo_color = Color(1, 1, 0.7058824, 1)
+metallic = 1.0
+roughness = 0.4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_16aas"]
+material = SubResource("StandardMaterial3D_6gkip")
+top_radius = 0.013
+bottom_radius = 0.02
+height = 0.01
+cap_bottom = false
+
+[sub_resource type="Gradient" id="Gradient_6gkip"]
+offsets = PackedFloat32Array(0, 0.5362319, 0.76811594)
+colors = PackedColorArray(0, 0, 0, 1, 0.55, 0.55, 0.55, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_16aas"]
+gradient = SubResource("Gradient_6gkip")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_m2q0e"]
+frequency = 0.002
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_cw0kk"]
+width = 64
+height = 64
+noise = SubResource("FastNoiseLite_m2q0e")
+
+[sub_resource type="SphereMesh" id="SphereMesh_pdnta"]
+material = SubResource("StandardMaterial3D_6gkip")
+radius = 0.024
+height = 0.04
+is_hemisphere = true
+
+[node name="BulletCasing" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.5285484e-15, 3.4969112e-08, 0.8, 0.8, -3.4969112e-08, 0, 3.4969112e-08, 0.8, -3.4969112e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_6gkip")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6060469e-09, 0.03674207, -1.6060469e-09)
+mesh = SubResource("CylinderMesh_16aas")
+skeleton = NodePath("../..")
+
+[node name="Decal" type="Decal" parent="MeshInstance3D/MeshInstance3D2"]
+transform = Transform3D(-4.371138e-08, 0, -1, 8.742278e-08, 1, 0, 1, -8.742278e-08, -4.3711385e-08, 1.682885e-10, 0.0038499832, -1.682885e-10)
+size = Vector3(0.008, 0.005, 0.008)
+texture_albedo = SubResource("GradientTexture2D_16aas")
+texture_normal = SubResource("NoiseTexture2D_cw0kk")
+albedo_mix = 0.35
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(1, 0, -4.2351647e-22, 0, -1, 8.742277e-08, 0, -8.742277e-08, -1, -1.5990325e-09, -0.0365816, 1.5990325e-09)
+mesh = SubResource("SphereMesh_pdnta")
+skeleton = NodePath("../..")
