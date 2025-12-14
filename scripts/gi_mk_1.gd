@@ -5,6 +5,7 @@ extends Node3D
 @onready var slide: MeshInstance3D = $Slide
 
 @export var full_auto: bool = false
+@export var plus_one: bool = false
 @export var recoil_amount: float = 0.1
 @export var recoil_recovery: float = 0.6
 @export var trigger_time: float = 0.05

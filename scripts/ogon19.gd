@@ -6,19 +6,19 @@ extends Node3D
 
 @export var full_auto: bool = false
 @export var plus_one: bool = false
-@export var recoil_amount: float = 0.2
-@export var recoil_recovery: float = 0.2
-@export var trigger_time: float = 0.15
+@export var recoil_amount: float = 0.1
+@export var recoil_recovery: float = 0.6
+@export var trigger_time: float = 0.05
 @export var viewpunch: float = 0.2
 @export var gunpunch: float = 0.33
 @export var bullet_energy: float = 20.0
-@export var bullet_penetration: float = 10.0
+@export var bullet_penetration: float = 5.0
 
-@export var max_ammo: int = 7
+@export var max_ammo: int = 8
 var ammo: int = 0
 
-const sfx_shoot = preload("res://assets/audio/sfx/weapons/caliber/50_shoot.wav")
-const sfx_crack = preload("res://assets/audio/sfx/weapons/caliber/45_crack.wav")
+const sfx_shoot = preload("res://assets/audio/sfx/weapons/caliber/45_crack.wav")
+const sfx_crack = preload("res://assets/audio/sfx/weapons/caliber/45_shoot.wav")
 
 var slide_base_pos: Vector3
 
@@ -37,9 +37,14 @@ func shoot():
 	get_tree().current_scene.add_child(muzzflash)
 	muzzflash.global_position = ray.global_position
 
+	GLOBAL.playsound3d(preload("res://assets/audio/sfx/weapons/sonorous.wav"), 
+	$CasingPos.global_position,
+	0.05,
+	randf_range(0.98, 1.02))
+
 	get_parent().punch += Vector3(
-		randf_range(-0.02, 0.02),
-		randf_range(-0.02, 0.02),
+		randf_range(-0.01, 0.01),
+		randf_range(-0.01, 0.01),
 		0.0
 	)
 
@@ -48,7 +53,7 @@ func shoot():
 	var casing: RigidBody3D = preload("res://scenes/bullet_casing.tscn").instantiate()
 	get_tree().current_scene.add_child(casing)
 	casing.global_transform = $CasingPos.global_transform
-	var c_vel := Vector3.UP
+	var c_vel: Vector3 = casing.transform.basis.x.normalized()
 	c_vel += Vector3(
 		randf_range(-0.1, 0.1),
 		randf_range(-0.1, 0.1),
@@ -59,7 +64,7 @@ func shoot():
 	get_parent().shoot(ray, bullet_energy, bullet_penetration)
 
 func _process(_delta: float) -> void:
-	if ammo <= 0:
+	if ammo <= 0 or GLOBAL.player.gun_controller.reloading:
 		slide.position.z = slide_base_pos.z + 0.125
 	slide.position = slide.position.lerp(slide_base_pos, 0.2)
 
@@ -81,17 +86,21 @@ func apply_hard_punch(dir_min: Vector3, dir_max: Vector3):
 	)
 
 func reload():
-	var animation_time = anim.get_animation("reload").get_length()
+	var animation_time = anim.get_animation("reload_1").get_length() * (max_ammo - ammo)
 	if ammo == 0:
 		animation_time += anim.get_animation("prime").get_length() * 2
 	GLOBAL.player.hud.reload_progress.max_value = animation_time
 	GLOBAL.player.gun_controller.reloading = true
-	anim.play("reload")
-	await anim.animation_finished
-	if ammo == 0:
-		await get_tree().create_timer(0.1).timeout
-		anim.play("prime")
+	if ammo > 0:
+		anim.play("slideback")
 		await anim.animation_finished
+	while ammo < max_ammo:
+		anim.play("reload_1")
+		await anim.animation_finished
+		ammo += 1
+	await get_tree().create_timer(0.1).timeout
+	anim.play("prime")
+	await anim.animation_finished
 	GLOBAL.player.gun_controller.reloading = false
 	GLOBAL.player.hud.reload_progress.value = 0
 	reload_finished.emit()

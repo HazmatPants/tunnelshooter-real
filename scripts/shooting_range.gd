@@ -5,7 +5,7 @@ func _ready() -> void:
 		if light is Light3D:
 			light.visible = false
 
-	await get_tree().create_timer(2.0).timeout
+	await get_tree().create_timer(1.0).timeout
 
 	GLOBAL.playsound(preload("res://assets/audio/sfx/ambient/massive_light_switch.ogg"))
 

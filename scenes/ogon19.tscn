@@ -1,10 +1,9 @@
 [gd_scene load_steps=20 format=3 uid="uid://cexas7g47wxah"]
 
-[ext_resource type="Script" uid="uid://h8ktifmretrd" path="res://scripts/gi_mk_1.gd" id="1_op5ft"]
-[ext_resource type="AudioStream" uid="uid://gaxffh1ikwdm" path="res://assets/audio/sfx/weapons/gi_mk1/gi_mk1_sliderelease.wav" id="2_akofg"]
-[ext_resource type="AudioStream" uid="uid://drpaj2h3c6t54" path="res://assets/audio/sfx/weapons/sonorous.wav" id="3_8rggj"]
-[ext_resource type="AudioStream" uid="uid://bb164bop1pen2" path="res://assets/audio/sfx/weapons/gi_mk1/gi_mk1_mag_out.wav" id="4_43cwr"]
-[ext_resource type="AudioStream" uid="uid://g4tksulcck2q" path="res://assets/audio/sfx/weapons/gi_mk1/gi_mk1_mag_in.wav" id="5_tdmvo"]
+[ext_resource type="Script" uid="uid://d20yi1eqkfl88" path="res://scripts/ogon19.gd" id="1_op5ft"]
+[ext_resource type="AudioStream" uid="uid://l11uylvhcg71" path="res://assets/audio/sfx/weapons/ogon19/mag2.ogg" id="2_op5ft"]
+[ext_resource type="AudioStream" uid="uid://3hddlm8pgkt8" path="res://assets/audio/sfx/weapons/ogon19/mag1.ogg" id="4_op5ft"]
+[ext_resource type="AudioStream" uid="uid://cuy8t2bbxgfnb" path="res://assets/audio/sfx/weapons/ogon19/ogon19_slideback.ogg" id="5_akofg"]
 [ext_resource type="Material" uid="uid://bmcbupdttg412" path="res://assets/materials/gun_steel.tres" id="6_ogsy1"]
 [ext_resource type="PackedScene" uid="uid://b358dp85skiui" path="res://scenes/bullet_9x19.tscn" id="7_akofg"]
 
@@ -17,6 +16,13 @@ tracks/0/path = NodePath("Slide")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.125, -0.145)
+tracks/1/type = "position_3d"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BulletCasing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = PackedFloat32Array(0, 1, 0, 0.10574759, 0.00867527)
 
 [sub_resource type="Animation" id="Animation_1e3ry"]
 resource_name = "prime"
@@ -27,7 +33,7 @@ tracks/0/enabled = true
 tracks/0/path = NodePath("Slide")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.125, -0.1, 0.03333333, 1, 0, 0.125, -0.1, 0.10000001, 1, 0, 0.125, -0.2, 0.13333337, 1, 0, 0.125, -0.2)
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.125, 0, 0.03333333, 1, 0, 0.125, 0, 0.10000001, 1, 0, 0.125, -0.145, 0.13333337, 1, 0, 0.125, -0.145)
 tracks/1/type = "method"
 tracks/1/imported = false
 tracks/1/enabled = true
@@ -38,7 +44,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0.06666667),
 "transitions": PackedFloat32Array(1),
 "values": [{
-"args": [ExtResource("2_akofg"), 1.0],
+"args": [ExtResource("2_op5ft"), 1.0],
 "method": &"playsound"
 }]
 }
@@ -49,20 +55,17 @@ tracks/2/path = NodePath(".")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.033333335, 0.06666667),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0.033333335),
+"transitions": PackedFloat32Array(1),
 "values": [{
 "args": [Vector3(-0.3, -0.05, 0), Vector3(-0.1, 0.05, 0)],
 "method": &"apply_hard_punch"
-}, {
-"args": [ExtResource("3_8rggj"), 0.05],
-"method": &"playsound"
 }]
 }
 
 [sub_resource type="Animation" id="Animation_igbvm"]
 resource_name = "reload_1"
-length = 1.25
+length = 0.4
 tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -70,18 +73,9 @@ tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.96666664, 1.2333333),
-"transitions": PackedFloat32Array(1, 1, 1),
-"values": [{
-"args": [ExtResource("4_43cwr"), 1.0],
-"method": &"playsound"
-}, {
-"args": [ExtResource("5_tdmvo"), 1.0],
-"method": &"playsound"
-}, {
-"args": [ExtResource("3_8rggj"), 0.01],
-"method": &"playsound"
-}]
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"values": []
 }
 tracks/1/type = "method"
 tracks/1/imported = false
@@ -90,11 +84,60 @@ tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(1.2333333),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0.16666669, 0.20000005),
+"transitions": PackedFloat32Array(1, 1),
 "values": [{
+"args": [ExtResource("4_op5ft"), 1.0],
+"method": &"playsound"
+}, {
 "args": [Vector3(0.01, 0, 0), Vector3(0.05, 0, 0)],
 "method": &"apply_punch"
+}]
+}
+tracks/2/type = "position_3d"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BulletCasing")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = PackedFloat32Array(0, 1, 0, 0.106, 1, 0.23333333, 1, 0, 0.3, 0, 0.33333337, 1, 0, 0.1, 0)
+
+[sub_resource type="Animation" id="Animation_8rggj"]
+resource_name = "slideback"
+length = 0.4
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slide")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.125, -0.145, 0.03333334, 1, 0, 0.125, -0.145, 0.26666668, 1, 0, 0.125, -0.05, 0.4, 1, 0, 0.125, -0.05)
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.06666667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [ExtResource("5_akofg"), 1.0],
+"method": &"playsound"
+}]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.06666667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [Vector3(-0.3, -0.05, 0), Vector3(-0.1, 0.05, 0)],
+"method": &"apply_hard_punch"
 }]
 }
 
@@ -102,7 +145,8 @@ tracks/1/keys = {
 _data = {
 &"RESET": SubResource("Animation_buff3"),
 &"prime": SubResource("Animation_1e3ry"),
-&"reload_1": SubResource("Animation_igbvm")
+&"reload_1": SubResource("Animation_igbvm"),
+&"slideback": SubResource("Animation_8rggj")
 }
 
 [sub_resource type="BoxMesh" id="BoxMesh_igbvm"]

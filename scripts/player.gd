@@ -207,7 +207,12 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("reload") and not gun_controller.reloading and not gun_controller.inspecting:
 		if gun != null:
-			if gun.ammo < gun.max_ammo + 1:
+			var can_reload
+			if gun.plus_one:
+				can_reload = gun.ammo < gun.max_ammo + 1
+			else:
+				can_reload = gun.ammo < gun.max_ammo
+			if can_reload:
 				gun.reload()
 				await gun.reload_finished
 				if gun.ammo == 0:
