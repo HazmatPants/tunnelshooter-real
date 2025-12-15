@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://byt425rt380ht" path="res://scripts/shooting_range.gd" id="1_bk2xl"]
 [ext_resource type="PackedScene" uid="uid://cgjj2bmatef67" path="res://scenes/player.tscn" id="1_pxwje"]
+[ext_resource type="Environment" uid="uid://clmdjl6m6i5ll" path="res://assets/res/default_environment.tres" id="2_ca51o"]
 [ext_resource type="PackedScene" uid="uid://vgep1fr31sdd" path="res://scenes/player_hud.tscn" id="2_fj3q4"]
 [ext_resource type="Material" uid="uid://bmy4ixxlbex4u" path="res://assets/materials/default.tres" id="3_xbf1c"]
 [ext_resource type="PackedScene" uid="uid://cxgydca3xwsmc" path="res://scenes/target.tscn" id="4_fj3q4"]
@@ -9,12 +10,6 @@
 [ext_resource type="FontFile" uid="uid://dcix7ee6kybk6" path="res://assets/fonts/JetBrainsMono-Bold.ttf" id="5_xbf1c"]
 [ext_resource type="PackedScene" uid="uid://bet7nsgnr3kr6" path="res://scenes/score_counter.tscn" id="6_r88yb"]
 [ext_resource type="PackedScene" uid="uid://tc5v8c60p5fe" path="res://scenes/ammoinator.tscn" id="9_mt837"]
-
-[sub_resource type="Environment" id="Environment_ig7tw"]
-ambient_light_source = 1
-ambient_light_energy = 0.0
-ssil_enabled = true
-glow_enabled = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sugp2"]
 size = Vector3(16, 0.1, 85)
@@ -120,7 +115,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.023518, 7.16, 41.188328)
 omni_range = 23.759394
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_ig7tw")
+environment = ExtResource("2_ca51o")
 
 [node name="Player" parent="." instance=ExtResource("1_pxwje")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4513435, 13.822091)

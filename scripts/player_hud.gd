@@ -4,6 +4,7 @@ extends CanvasLayer
 var crosshair_size: float = 512.0
 
 func _process(_delta: float) -> void:
+	if not GLOBAL.player: return
 	var inspecting = GLOBAL.player.gun_controller.inspecting
 	if GLOBAL.player.gun != null:
 		var gun = GLOBAL.player.gun
@@ -28,15 +29,15 @@ func _process(_delta: float) -> void:
 		$Inspect/Background.modulate.a = lerp($Inspect/Background.modulate.a, 1.0, 0.1)
 	else:
 		$Inspect/Background.modulate.a = lerp($Inspect/Background.modulate.a, 0.0, 0.1)
-	var crosshair_modulate_a: float = 1.0
+	var crosshair_alpha: float = 1.0
 	if GLOBAL.player.gun:
 		var ray: RayCast3D = GLOBAL.player.gun.ray
 		var ray_point := Vector3.ZERO
 		if ray.is_colliding():
-			crosshair_modulate_a = 0.8
+			crosshair_alpha = 0.8
 			ray_point = ray.get_collision_point()
 		else:
-			crosshair_modulate_a = 0.1
+			crosshair_alpha = 0.1
 			ray_point = ray.to_global(ray.target_position)
 		var crosshair_target = GLOBAL.player.camera.unproject_position(ray_point)
 		if GLOBAL.player.gun_controller.reloading:
@@ -45,7 +46,7 @@ func _process(_delta: float) -> void:
 
 
 	if Input.is_action_pressed("rmb") and not GLOBAL.player.gun_controller.reloading:
-		crosshair_modulate_a = 0.0
+		crosshair_alpha = 0.0
 
 	var crosshair_tex = $Crosshair/TextureRect
 
@@ -56,8 +57,11 @@ func _process(_delta: float) -> void:
 	crosshair_tex.position = -crosshair_tex.size / 2
 	crosshair_tex.pivot_offset = crosshair_tex.size / 2
 
-	crosshair.modulate.a = lerp(crosshair.modulate.a, crosshair_modulate_a, 0.2)
+	crosshair.modulate.a = lerp(crosshair.modulate.a, crosshair_alpha, 0.2)
 
-	$ReserveLabel.text = "Reserve: %s" % GLOBAL.player.reserve_ammo
+	if GLOBAL.player.reserve_ammo > 922339203600000000:
+		$ReserveLabel.text = "Reserve: INF"
+	else:
+		$ReserveLabel.text = "Reserve: %s" % GLOBAL.player.reserve_ammo
 	if GLOBAL.player.gun:
 		$AmmoLabel.text = "Ammo: %s" % GLOBAL.player.gun.ammo

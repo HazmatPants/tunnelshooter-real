@@ -1,0 +1,76 @@
+[gd_scene load_steps=11 format=3 uid="uid://q402ynn75gpc"]
+
+[ext_resource type="Material" uid="uid://3hr7onrjgmq3" path="res://assets/materials/brass.tres" id="1_43dgj"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_6gkip"]
+material = ExtResource("1_43dgj")
+top_radius = 0.023
+bottom_radius = 0.023
+height = 0.07
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6gkip"]
+albedo_color = Color(1, 1, 0.7058824, 1)
+metallic = 1.0
+roughness = 0.4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_16aas"]
+material = SubResource("StandardMaterial3D_6gkip")
+top_radius = 0.018
+bottom_radius = 0.025
+height = 0.01
+cap_bottom = false
+
+[sub_resource type="Gradient" id="Gradient_6gkip"]
+offsets = PackedFloat32Array(0, 0.5362319, 0.76811594)
+colors = PackedColorArray(0, 0, 0, 1, 0.55, 0.55, 0.55, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_16aas"]
+gradient = SubResource("Gradient_6gkip")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_m2q0e"]
+frequency = 0.002
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_cw0kk"]
+width = 64
+height = 64
+noise = SubResource("FastNoiseLite_m2q0e")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_a1xrn"]
+material = ExtResource("1_43dgj")
+top_radius = 0.021
+bottom_radius = 0.023
+height = 0.01
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_iutmd"]
+material = ExtResource("1_43dgj")
+top_radius = 0.03
+bottom_radius = 0.03
+height = 0.002
+
+[node name="MeshInstance3D" type="MeshInstance3D"]
+transform = Transform3D(1.7196169e-15, 3.934025e-08, 0.9, 0.9, -3.934025e-08, 0, 3.934025e-08, 0.9, -3.934025e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_6gkip")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.70000005, -1.0658141e-14, 0, 1.0658141e-14, 0.70000005, -1.0658141e-14, 0, 1.0658141e-14, 0.70000005, 1.6675841e-09, 0.03814987, -1.6675841e-09)
+mesh = SubResource("CylinderMesh_16aas")
+skeleton = NodePath("../..")
+
+[node name="Decal" type="Decal" parent="MeshInstance3D2"]
+transform = Transform3D(-3.934025e-08, 7.6232963e-22, -0.9, 7.86805e-08, 0.9, -3.439233e-15, 0.9, -7.86805e-08, -3.934025e-08, 1.682885e-10, 0.0038499832, -1.682885e-10)
+size = Vector3(0.008, 0.005, 0.008)
+texture_albedo = SubResource("GradientTexture2D_16aas")
+texture_normal = SubResource("NoiseTexture2D_cw0kk")
+albedo_mix = 0.35
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.9000001, 1.4210855e-14, -3.1763736e-22, -1.4210855e-14, 0.9000001, 1.4210855e-14, 1.0587912e-21, -1.4210855e-14, 0.9000001, 1.5659927e-09, 0.03582573, -1.5659927e-09)
+mesh = SubResource("CylinderMesh_a1xrn")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.75, -3.5527137e-15, -1.0587912e-21, 3.5527137e-15, 0.75, -3.5527137e-15, 6.352747e-22, 3.5527137e-15, 0.75, -4.1438408e-10, 0.040519994, 4.1438408e-10)
+mesh = SubResource("CylinderMesh_iutmd")
+skeleton = NodePath("../..")

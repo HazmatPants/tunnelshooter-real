@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://d2857bg4ur68c"
-path="res://.godot/imported/clip_throw.wav-6fe22b6a11adcfad2c5ed0cafd2a5f7d.sample"
+path="res://.godot/imported/clip_throw.wav-7b44109c0a88d1af53844cfb544ec3c6.sample"
 
 [deps]
 
-source_file="res://assets/audio/sfx/weapons/ogon19/clip_throw.wav"
-dest_files=["res://.godot/imported/clip_throw.wav-6fe22b6a11adcfad2c5ed0cafd2a5f7d.sample"]
+source_file="res://assets/audio/sfx/weapons/sz19/clip_throw.wav"
+dest_files=["res://.godot/imported/clip_throw.wav-7b44109c0a88d1af53844cfb544ec3c6.sample"]
 
 [params]
 

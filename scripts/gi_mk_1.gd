@@ -50,16 +50,7 @@ func shoot():
 
 	GLOBAL.player.viewpunch_target += Vector3(viewpunch, 0, randf_range(-viewpunch, viewpunch))
 
-	var casing: RigidBody3D = preload("res://scenes/bullet_casing.tscn").instantiate()
-	get_tree().current_scene.add_child(casing)
-	casing.global_transform = $CasingPos.global_transform
-	var c_vel: Vector3 = casing.transform.basis.x.normalized()
-	c_vel += Vector3(
-		randf_range(-0.1, 0.1),
-		randf_range(-0.1, 0.1),
-		randf_range(-0.1, 0.1)
-	)
-	casing.apply_central_impulse(c_vel * randf_range(5.0, 10.0))
+	get_parent().spawn_casing($CasingPos.global_transform, $CasingPos.global_transform.basis.x.normalized())
 
 	get_parent().shoot(ray, bullet_energy, bullet_penetration)
 

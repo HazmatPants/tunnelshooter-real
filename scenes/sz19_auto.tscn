@@ -1,13 +1,13 @@
 [gd_scene load_steps=28 format=3 uid="uid://2rfhwwu7dd13"]
 
 [ext_resource type="Script" uid="uid://d20yi1eqkfl88" path="res://scripts/sz19.gd" id="1_3i0ud"]
-[ext_resource type="AudioStream" uid="uid://l11uylvhcg71" path="res://assets/audio/sfx/weapons/ogon19/mag2.ogg" id="2_y0xko"]
-[ext_resource type="AudioStream" uid="uid://3hddlm8pgkt8" path="res://assets/audio/sfx/weapons/ogon19/mag1.ogg" id="3_5gao5"]
+[ext_resource type="AudioStream" uid="uid://dhxhwl8dnu7a6" path="res://assets/audio/sfx/weapons/sz19/ogon19_slideforward.ogg" id="2_3i0ud"]
+[ext_resource type="AudioStream" uid="uid://yv0x05q50xm0" path="res://assets/audio/sfx/weapons/sz19/load1.wav" id="3_3i0ud"]
 [ext_resource type="AudioStream" uid="uid://c73cnx85c6ixk" path="res://assets/audio/sfx/weapons/foley2.ogg" id="4_5arli"]
-[ext_resource type="AudioStream" uid="uid://bnm8iechkk3fg" path="res://assets/audio/sfx/weapons/ogon19/clip_in.ogg" id="5_i5fa5"]
-[ext_resource type="AudioStream" uid="uid://de7iuji0vw84q" path="res://assets/audio/sfx/weapons/ogon19/clip.ogg" id="6_e2f4b"]
-[ext_resource type="AudioStream" uid="uid://d2857bg4ur68c" path="res://assets/audio/sfx/weapons/ogon19/clip_throw.wav" id="7_4tnvf"]
-[ext_resource type="AudioStream" uid="uid://cuy8t2bbxgfnb" path="res://assets/audio/sfx/weapons/ogon19/ogon19_slideback.ogg" id="8_oetxp"]
+[ext_resource type="AudioStream" uid="uid://rxvu4f4rbg0v" path="res://assets/audio/sfx/weapons/sz19/load2.wav" id="4_y0xko"]
+[ext_resource type="AudioStream" uid="uid://ccpgs5t7gpox8" path="res://assets/audio/sfx/weapons/sz19/clip.wav" id="6_5gao5"]
+[ext_resource type="AudioStream" uid="uid://d2857bg4ur68c" path="res://assets/audio/sfx/weapons/sz19/clip_throw.wav" id="7_4tnvf"]
+[ext_resource type="AudioStream" uid="uid://cuy8t2bbxgfnb" path="res://assets/audio/sfx/weapons/sz19/ogon19_slideback.ogg" id="8_oetxp"]
 [ext_resource type="Material" uid="uid://bmcbupdttg412" path="res://assets/materials/gun_steel.tres" id="9_u3n4r"]
 [ext_resource type="PackedScene" uid="uid://b358dp85skiui" path="res://scenes/bullet_9x19.tscn" id="10_boo36"]
 
@@ -110,7 +110,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0.06666667),
 "transitions": PackedFloat32Array(1),
 "values": [{
-"args": [ExtResource("2_y0xko"), 1.0],
+"args": [ExtResource("2_3i0ud"), 1.0],
 "method": &"playsound"
 }]
 }
@@ -131,7 +131,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_igbvm"]
 resource_name = "reload_1"
-length = 0.4
+length = 0.5
 tracks/0/type = "method"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -139,9 +139,12 @@ tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(),
-"transitions": PackedFloat32Array(),
-"values": []
+"times": PackedFloat32Array(0.26666668),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [[ExtResource("3_3i0ud"), ExtResource("4_y0xko")], 1.0],
+"method": &"play_rand_sound"
+}]
 }
 tracks/1/type = "method"
 tracks/1/imported = false
@@ -150,12 +153,9 @@ tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.16666669, 0.20000005),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0.26666668),
+"transitions": PackedFloat32Array(1),
 "values": [{
-"args": [ExtResource("3_5gao5"), 1.0],
-"method": &"playsound"
-}, {
 "args": [Vector3(-0.01, 0, 0), Vector3(-0.05, 0, 0)],
 "method": &"apply_punch"
 }]
@@ -190,16 +190,13 @@ tracks/0/path = NodePath(".")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.7, 1.0666666, 1.6666666),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.5, 1.6666666),
+"transitions": PackedFloat32Array(1, 1, 1),
 "values": [{
 "args": [ExtResource("4_5arli"), 1.0],
 "method": &"playsound"
 }, {
-"args": [ExtResource("5_i5fa5"), 1.0],
-"method": &"playsound"
-}, {
-"args": [ExtResource("6_e2f4b"), 1.0],
+"args": [ExtResource("6_5gao5"), 1.0],
 "method": &"playsound"
 }, {
 "args": [ExtResource("7_4tnvf"), 1.0],
@@ -275,13 +272,16 @@ tracks/7/path = NodePath(".")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
-"times": PackedFloat32Array(0.70000005, 1.0666666),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0.70000005, 1.0666666, 1.5666667),
+"transitions": PackedFloat32Array(1, 1, 1),
 "values": [{
 "args": [Vector3(-0.01, 0, 0), Vector3(-0.05, 0, 0)],
 "method": &"apply_punch"
 }, {
 "args": [Vector3(-0.01, 0, 0), Vector3(-0.05, 0, 0)],
+"method": &"apply_punch"
+}, {
+"args": [Vector3(0.01, 0, 0), Vector3(0.05, 0, 0)],
 "method": &"apply_punch"
 }]
 }
@@ -383,7 +383,7 @@ roughness = 0.61
 material = SubResource("StandardMaterial3D_op5ft")
 size = Vector3(0.05, 0.315, 0.01)
 
-[node name="Ogon 19" type="Node3D"]
+[node name="SZ 19" type="Node3D"]
 script = ExtResource("1_3i0ud")
 full_auto = true
 recoil_amount = 0.05

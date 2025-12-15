@@ -51,10 +51,25 @@ const GUN_CALS = {
 	GUNS.SZ_19_AUTO: "9x19mm Parabellum",
 }
 
+const GUN_CALS_INT = {
+	GUNS.NONE: "",
+	GUNS.GI_MK_1: "45gi",
+	GUNS.GI_MK_1_AUTO: "45gi",
+	GUNS.OGON_50: "50ae",
+	GUNS.OGON_50_AUTO: "50ae",
+	GUNS.SZ_19: "9mm",
+	GUNS.SZ_19_AUTO: "9mm",
+}
+
 var player: CharacterBody3D = null
 
 func _ready() -> void:
-	player = get_tree().current_scene.get_node_or_null("Player")
+	init()
+
+func init():
+	if is_inside_tree():
+		player = null
+		player = get_tree().current_scene.get_node_or_null("Player")
 
 func playsound(stream: AudioStream, volume_linear: float=1.0, pitch_scale: float=1.0, bus: String="SFX"):
 	var ap = AudioStreamPlayer.new()

@@ -16,6 +16,7 @@ var reloading: bool = false
 var inspecting: bool = false
 
 func place_decal(pos: Vector3, normal: Vector3, collider: Node3D):
+	if not is_inside_tree(): return
 	var particles: GPUParticles3D = preload("res://scenes/bullet_hit_particles.tscn").instantiate()
 	get_tree().current_scene.add_child(particles)
 	particles.draw_pass_1 = SphereMesh.new()
@@ -46,6 +47,7 @@ func place_decal(pos: Vector3, normal: Vector3, collider: Node3D):
 
 var distance: float = 0.0
 func _physics_process(_delta: float) -> void:
+	if not GLOBAL.player: return
 	bump_ray.global_transform = global_transform.translated_local(Vector3(0, 0.1, 0.055))
 	if GLOBAL.player.gun:
 		if bump_ray.is_colliding():
@@ -61,6 +63,7 @@ func shoot(ray, bullet_energy, penetration_power):
 	var energy = bullet_energy
 
 	while energy > 0:
+		if not get_tree(): break
 		var to = origin + direction * MAX_DISTANCE
 		var query = PhysicsRayQueryParameters3D.create(origin, to)
 		query.exclude = [self]
@@ -114,6 +117,7 @@ func get_penetration_thickness(
 	var pos := entry_pos + direction * step
 
 	while traveled < max_distance:
+		if not is_inside_tree(): break
 		var query = PhysicsRayQueryParameters3D.create(
 			pos,
 			pos + direction * step
@@ -130,3 +134,23 @@ func get_penetration_thickness(
 		pos += direction * step
 
 	return INF
+
+func spawn_casing(tx: Transform3D, dir):
+	var casing: RigidBody3D = preload("res://scenes/bullet_casing.tscn").instantiate()
+	get_tree().current_scene.add_child(casing)
+	casing.type = GLOBAL.GUN_CALS_INT[GLOBAL.player.equipped_gun]
+	casing.global_position = tx.origin
+	casing.global_rotation = tx.basis.get_euler()
+	var c_vel: Vector3 = dir
+	c_vel += Vector3(
+		randf_range(-0.1, 0.1),
+		randf_range(-0.1, 0.1),
+		randf_range(-0.1, 0.1)
+	)
+	casing.angular_velocity += Vector3(
+		randf_range(-1, 1),
+		randf_range(-1, 1),
+		randf_range(-1, 1)
+	) * randf()
+	casing.apply_central_impulse(c_vel * randf_range(5.0, 10.0))
+	casing.casing_ready()

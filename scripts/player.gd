@@ -12,6 +12,7 @@ extends CharacterBody3D
 @export var gravity: float = -9.8
 @export var viewbob_frequency: float = 2.0
 @export var viewbob_amplitude: float = 0.01
+@export var ambient_viewbob: float = 0.001
 
 @export var equipped_gun: GLOBAL.GUNS = GLOBAL.GUNS.NONE
 @export var reserve_ammo: int = 90
@@ -59,8 +60,6 @@ func _unhandled_input(event: InputEvent) -> void:
 				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
-	give_gun(equipped_gun)
 
 var trigger_time: float = 0.0
 var last_viewbob_sine: float = 0.0
@@ -142,6 +141,12 @@ func _physics_process(delta: float) -> void:
 
 	var viewbob_sine = sin((PI * viewbob_time) / 30) * viewbob_amplitude / 2 * PI
 
+	viewpunch_target += Vector3(
+		randf_range(-ambient_viewbob, ambient_viewbob),
+		randf_range(-ambient_viewbob, ambient_viewbob),
+		randf_range(-ambient_viewbob, ambient_viewbob)
+	)
+
 	if input_vector.length() > 0.1:
 		viewbob_time += viewbob_frequency * (velocity.length() / 4)
 		camera_position.position.y = viewbob_sine + 0.7
@@ -211,6 +216,8 @@ func _physics_process(delta: float) -> void:
 	gun_controller.rotation.x += gun_controller.recoil / 2
 	if gun:
 		gun_controller.recoil = lerp(gun_controller.recoil, 0.0, gun.recoil_recovery)
+	else:
+		gun_controller.recoil = lerp(gun_controller.recoil, 0.0, 0.4)
 
 	if Input.is_action_just_pressed("reload") and not gun_controller.reloading and not gun_controller.inspecting:
 		if gun != null:
@@ -284,6 +291,12 @@ func give_gun(target_gun: GLOBAL.GUNS):
 		if gun_controller.get_child(1):
 			gun_controller.get_child(1).queue_free()
 	gun = null
-	gun = load(GLOBAL.GUN_SCENES[target_gun]).instantiate()
-	equipped_gun = target_gun
-	gun_controller.add_child(gun)
+	if target_gun != GLOBAL.GUNS.NONE:
+		gun = load(GLOBAL.GUN_SCENES[target_gun]).instantiate()
+		equipped_gun = target_gun
+		gun_controller.add_child(gun)
+
+func give_rand_gun():
+	var guns = GLOBAL.GUNS.keys()
+	guns.erase("NONE")
+	give_gun(GLOBAL.GUNS[guns[randi_range(0, guns.size() - 1)]])

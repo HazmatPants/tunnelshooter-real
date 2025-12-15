@@ -142,7 +142,7 @@ size = Vector3(0.065, 0.06, 0.5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_cl7r3"]
 material = ExtResource("6_aapa3")
-size = Vector3(0.07, 0.1, 0.15)
+size = Vector3(0.07, 0.1, 0.085)
 
 [sub_resource type="BoxMesh" id="BoxMesh_t6oaa"]
 material = ExtResource("6_aapa3")
@@ -203,7 +203,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.085, -0.198)
 mesh = SubResource("BoxMesh_buff3")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.10532678, -0.5246502)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.10532678, -0.4975269)
 mesh = SubResource("BoxMesh_cl7r3")
 
 [node name="Magazine" type="MeshInstance3D" parent="."]
@@ -241,7 +241,7 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12964264, -0.041284323)
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.125, -0.35976848)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.125, -0.2964505)
 mesh = SubResource("CylinderMesh_igbvm")
 
 [node name="RearLeft2" type="MeshInstance3D" parent="."]
