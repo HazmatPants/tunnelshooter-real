@@ -3,7 +3,9 @@ extends CanvasLayer
 @onready var crosshair = $Crosshair
 var crosshair_size: float = 512.0
 
-func _process(_delta: float) -> void:
+var sine_time: float = 0.0
+
+func _process(delta: float) -> void:
 	if not GLOBAL.player: return
 	var inspecting = GLOBAL.player.gun_controller.inspecting
 	if GLOBAL.player.gun != null:
@@ -12,10 +14,10 @@ func _process(_delta: float) -> void:
 		var title_text := ""
 		var desc_text := ""
 
-		title_text = GLOBAL.GUN_NAMES[equipped_gun]
-		desc_text = GLOBAL.GUN_DESCS[equipped_gun]
+		title_text = GunManager.GUNS[equipped_gun]["name"]
+		desc_text = GunManager.GUNS[equipped_gun]["description"]
 
-		desc_text += "Caliber: %s\n" % GLOBAL.GUN_CALS[equipped_gun]
+		desc_text += "Caliber: %s\n" % GunManager.ROUNDS[GunManager.GUNS[equipped_gun]["caliber_id"]]["full_name"]
 		desc_text += "Trigger travel time: %sms\n" % int(gun.trigger_time * 1000)
 		desc_text += "Fire rate: ~%s RPM\n" % int(60.0 / gun.trigger_time)
 		desc_text += "Capacity: %s" % gun.max_ammo
@@ -65,3 +67,12 @@ func _process(_delta: float) -> void:
 		$ReserveLabel.text = "Reserve: %s" % GLOBAL.player.reserve_ammo
 	if GLOBAL.player.gun:
 		$AmmoLabel.text = "Ammo: %s" % GLOBAL.player.gun.ammo
+
+	sine_time += delta
+
+	var pain_sine = (sin(sine_time * 4.0) + 1.5) * 0.5
+	pain_sine = lerp(0.4, 1.0, pain_sine)
+	var mod = 1.0 - GLOBAL.player.health_percent
+
+	$DamageOverlay.texture.gradient.set_offset(0, 1.0 - (pain_sine * mod))
+	$DamageOverlay.modulate.a = 1.0 - GLOBAL.player.health_percent

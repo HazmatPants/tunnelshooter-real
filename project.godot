@@ -13,12 +13,14 @@ config_version=5
 config/name="test"
 run/main_scene="uid://chp56y0i0a2wj"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://assets/textures/ui/icons/godot.svg"
 
 [autoload]
 
 GLOBAL="*res://scripts/GLOBAL.gd"
 ScoreManager="*res://scripts/score_manager.gd"
+GunManager="*res://scripts/gun_manager.gd"
+ModManager="*res://scripts/mod_manager.gd"
 
 [input]
 

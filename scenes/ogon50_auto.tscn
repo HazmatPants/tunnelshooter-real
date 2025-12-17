@@ -1,6 +1,6 @@
 [gd_scene load_steps=23 format=4 uid="uid://bgcyiuf07kd81"]
 
-[ext_resource type="Script" uid="uid://dvi12x0werhu5" path="res://scripts/ogon50.gd" id="1_4q120"]
+[ext_resource type="Script" uid="uid://cpx107igikmc0" path="res://scripts/ogon_50_auto.gd" id="1_4q120"]
 [ext_resource type="AudioStream" uid="uid://bp3huqwemahrl" path="res://assets/audio/sfx/weapons/ogon50/ogon50_slideback.wav" id="2_6lq46"]
 [ext_resource type="AudioStream" uid="uid://cevlavbipmnac" path="res://assets/audio/sfx/weapons/ogon50/ogon50_sliderelease.wav" id="3_0wxr4"]
 [ext_resource type="AudioStream" uid="uid://b473j2abck5yo" path="res://assets/audio/sfx/weapons/ogon50/ogon50_mag_out.wav" id="4_n2nfw"]
@@ -188,10 +188,6 @@ size = Vector3(0.04, 0.02, 0.02)
 
 [node name="Ogon 50 auto" type="Node3D"]
 script = ExtResource("1_4q120")
-full_auto = true
-recoil_recovery = 0.3
-gunpunch = 0.0
-max_ammo = 12
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

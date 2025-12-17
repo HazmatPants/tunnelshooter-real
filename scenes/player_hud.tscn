@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://vgep1fr31sdd"]
+[gd_scene load_steps=9 format=3 uid="uid://vgep1fr31sdd"]
 
 [ext_resource type="Script" uid="uid://io261lnktacx" path="res://scripts/player_hud.gd" id="1_er5qu"]
 [ext_resource type="FontFile" uid="uid://dcix7ee6kybk6" path="res://assets/fonts/JetBrainsMono-Bold.ttf" id="2_iraov"]
@@ -20,6 +20,14 @@ expand_margin_left = 8.0
 expand_margin_top = 8.0
 expand_margin_right = 8.0
 expand_margin_bottom = 8.0
+
+[sub_resource type="Gradient" id="Gradient_er5qu"]
+colors = PackedColorArray(1, 0, 0, 0.57254905, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_or0tx"]
+gradient = SubResource("Gradient_er5qu")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [node name="PlayerHUD" type="CanvasLayer"]
 script = ExtResource("1_er5qu")
@@ -145,3 +153,13 @@ anchor_bottom = 0.035
 offset_top = 0.3199997
 offset_right = 40.0
 offset_bottom = 23.32
+
+[node name="DamageOverlay" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(576, 324)
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_or0tx")

@@ -13,9 +13,14 @@ extends CharacterBody3D
 @export var viewbob_frequency: float = 2.0
 @export var viewbob_amplitude: float = 0.01
 @export var ambient_viewbob: float = 0.001
+@export var max_health: float = 0.5
+var health: float = max_health
+var health_percent: float = 1.0
 
-@export var equipped_gun: GLOBAL.GUNS = GLOBAL.GUNS.NONE
+@export var equipped_gun: String = ""
 @export var reserve_ammo: int = 90
+
+var hand_shakiness: float = 0.0
 
 var mouse_delta := Vector2.ZERO
 var camera_target_rotation := Vector3.ZERO
@@ -48,6 +53,15 @@ const SFX_FOOTSTEP: Dictionary = {
 	]
 }
 
+const SFX_FLESH_HIT = [
+	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_1.wav"),
+	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_2.wav"),
+	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_3.wav"),
+	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_4.wav"),
+	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_5.wav"),
+	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_6.wav")
+]
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
@@ -58,8 +72,12 @@ func _unhandled_input(event: InputEvent) -> void:
 				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			else:
 				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+func _process(_delta: float) -> void:
+	health_percent = health / max_health
 
 var trigger_time: float = 0.0
 var last_viewbob_sine: float = 0.0
@@ -145,7 +163,15 @@ func _physics_process(delta: float) -> void:
 		randf_range(-ambient_viewbob, ambient_viewbob),
 		randf_range(-ambient_viewbob, ambient_viewbob),
 		randf_range(-ambient_viewbob, ambient_viewbob)
-	)
+	) * lerp(10.0, 1.0, health_percent)
+
+	gun_controller.punch_target += Vector3(
+		randf_range(-ambient_viewbob, ambient_viewbob),
+		randf_range(-ambient_viewbob, ambient_viewbob),
+		randf_range(-ambient_viewbob, ambient_viewbob)
+	) * lerp(3.0, 0.25, health_percent + hand_shakiness)
+
+	hand_shakiness = lerp(hand_shakiness, 0.0, 0.1)
 
 	if input_vector.length() > 0.1:
 		viewbob_time += viewbob_frequency * (velocity.length() / 4)
@@ -255,6 +281,7 @@ func _physics_process(delta: float) -> void:
 						camera_target_rotation.x += gun.recoil_amount
 						gun_controller.recoil += gun.recoil_amount
 						gun_controller.punch.x += gun.gunpunch
+						hand_shakiness += 1.0
 						gun_controller.punch_target += Vector3(
 							randf_range(-0.01, 0.01),
 							randf_range(-0.01, 0.01),
@@ -286,17 +313,28 @@ func get_footstep_material() -> StringName:
 				return collider.get_meta("material")
 	return "metal"
 
-func give_gun(target_gun: GLOBAL.GUNS):
+func give_gun(target_gun: String):
 	if gun_controller.get_child_count() > 1:
 		if gun_controller.get_child(1):
 			gun_controller.get_child(1).queue_free()
 	gun = null
-	if target_gun != GLOBAL.GUNS.NONE:
-		gun = load(GLOBAL.GUN_SCENES[target_gun]).instantiate()
+	if target_gun != "":
+		var path = GunManager.GUNS[target_gun]["scene_path"]
+		gun = load(path).instantiate()
 		equipped_gun = target_gun
 		gun_controller.add_child(gun)
 
 func give_rand_gun():
-	var guns = GLOBAL.GUNS.keys()
-	guns.erase("NONE")
-	give_gun(GLOBAL.GUNS[guns[randi_range(0, guns.size() - 1)]])
+	var guns = GunManager.GUNS.keys()
+	give_gun(guns[randi_range(0, guns.size() - 1)])
+
+func _hit_by_bullet(hit):
+	GLOBAL.playsound(GLOBAL.randsfx(SFX_FLESH_HIT), 3.0)
+	viewpunch_target += Vector3(
+		randf_range(-1, 1),
+		randf_range(-1, 1),
+		randf_range(-1, 1)
+	) / 2
+	health -= randf_range(0.01, 0.05)
+	if hit == $Head:
+		health = 0.0

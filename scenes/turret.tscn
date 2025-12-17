@@ -1,0 +1,76 @@
+[gd_scene load_steps=10 format=3 uid="uid://cv04j6u6ilol5"]
+
+[ext_resource type="Script" uid="uid://54vsoreham0d" path="res://scripts/turret.gd" id="1_x3mc5"]
+[ext_resource type="Material" uid="uid://ba5aoauwuhw3t" path="res://assets/materials/rough_metal.tres" id="2_el7wl"]
+[ext_resource type="AudioStream" uid="uid://ck83040bfc4x8" path="res://assets/audio/sfx/weapons/turret/turret_alarm.wav" id="3_485p4"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_el7wl"]
+material = ExtResource("2_el7wl")
+height = 0.1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_485p4"]
+material = ExtResource("2_el7wl")
+top_radius = 0.25
+bottom_radius = 0.25
+height = 0.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_pp6j5"]
+material = ExtResource("2_el7wl")
+size = Vector3(0.1, 0.4, 0.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6fjxm"]
+material = ExtResource("2_el7wl")
+size = Vector3(0.15, 0.2, 0.5)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_dirdf"]
+material = ExtResource("2_el7wl")
+top_radius = 0.055
+bottom_radius = 0.055
+height = 0.4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pp6j5"]
+material = ExtResource("2_el7wl")
+top_radius = 0.055
+bottom_radius = 0.055
+height = 0.2
+
+[node name="Turret" type="Node3D"]
+script = ExtResource("1_x3mc5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_el7wl")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12986144, 0)
+mesh = SubResource("CylinderMesh_485p4")
+
+[node name="YPivot" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3367363, 0)
+mesh = SubResource("BoxMesh_pp6j5")
+
+[node name="XPivot" type="Node3D" parent="YPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.057209373, 0)
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="YPivot/XPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.174)
+mesh = SubResource("BoxMesh_6fjxm")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="YPivot/XPivot"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.004326105, -0.5899869)
+mesh = SubResource("CylinderMesh_dirdf")
+skeleton = NodePath("../MeshInstance3D4")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="YPivot/XPivot"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.15266517, -0.25891387)
+mesh = SubResource("CylinderMesh_pp6j5")
+skeleton = NodePath("../MeshInstance3D4")
+
+[node name="RayCast3D" type="RayCast3D" parent="YPivot/XPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.004326105, -0.5899869)
+target_position = Vector3(0, 0, -100)
+collide_with_areas = true
+
+[node name="AlarmPlayer" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_485p4")
+volume_db = -20.0

@@ -1,11 +1,13 @@
-[gd_scene load_steps=14 format=3 uid="uid://chp56y0i0a2wj"]
+[gd_scene load_steps=24 format=3 uid="uid://chp56y0i0a2wj"]
 
 [ext_resource type="Environment" uid="uid://clmdjl6m6i5ll" path="res://assets/res/default_environment.tres" id="1_l6cm7"]
 [ext_resource type="Script" uid="uid://b2medua5x6adc" path="res://scripts/main_menu.gd" id="1_wu84c"]
 [ext_resource type="PackedScene" uid="uid://cgjj2bmatef67" path="res://scenes/player.tscn" id="2_bqqt6"]
 [ext_resource type="AudioStream" uid="uid://b6b8vxmghjfsu" path="res://assets/audio/bgs/light_loop_2.wav" id="3_8ln24"]
 [ext_resource type="PackedScene" uid="uid://vgep1fr31sdd" path="res://scenes/player_hud.tscn" id="3_wu84c"]
-[ext_resource type="Material" uid="uid://bog1ytejugdae" path="res://assets/materials/void.tres" id="6_rtw2f"]
+[ext_resource type="Material" uid="uid://ba5aoauwuhw3t" path="res://assets/materials/rough_metal.tres" id="6_rtw2f"]
+[ext_resource type="Texture2D" uid="uid://ddxmxgyyfy8mn" path="res://assets/textures/ui/icons/godot.svg" id="7_oa1go"]
+[ext_resource type="Texture2D" uid="uid://gkxp34iwiq8y" path="res://assets/textures/ui/icons/dolphin.svg" id="8_tbmy8"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_vue75"]
 material = ExtResource("6_rtw2f")
@@ -26,14 +28,57 @@ size = Vector3(2, 1, 0.2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8ln24"]
 transparency = 1
-albedo_color = Color(0, 0.7019608, 1, 0.33333334)
-emission_enabled = true
-emission = Color(0, 0.7019608, 1, 1)
-emission_energy_multiplier = 2.0
+shading_mode = 0
+albedo_color = Color(0, 0.6999998, 1, 0.039215688)
 
 [sub_resource type="BoxMesh" id="BoxMesh_rtw2f"]
 material = SubResource("StandardMaterial3D_8ln24")
 size = Vector3(2, 1, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tbmy8"]
+size = Vector3(1, 1, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jk1qb"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("7_oa1go")
+uv1_scale = Vector3(1, 1, 0)
+uv1_offset = Vector3(1.5, 1.5, 0)
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_5dd4i"]
+material = SubResource("StandardMaterial3D_jk1qb")
+size = Vector3(1, 1, 0.1)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jk1qb"]
+load_path = "res://.godot/imported/github.png-d55801df3b340e4fb56b8977b949ae63.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5dd4i"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_texture = SubResource("CompressedTexture2D_jk1qb")
+uv1_scale = Vector3(1, 1, 0)
+uv1_offset = Vector3(1.5, 1.5, 0)
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_lgwnu"]
+material = SubResource("StandardMaterial3D_5dd4i")
+size = Vector3(1, 1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lgwnu"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_texture = ExtResource("8_tbmy8")
+uv1_scale = Vector3(1, 1, 0)
+uv1_offset = Vector3(1.5, 1.5, 0)
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_flqon"]
+material = SubResource("StandardMaterial3D_lgwnu")
+size = Vector3(1, 1, 0.1)
 
 [node name="Main Menu" type="Node3D"]
 script = ExtResource("1_wu84c")
@@ -52,11 +97,12 @@ autoplay = true
 
 [node name="Player" parent="." instance=ExtResource("2_bqqt6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 3.5395932)
-equipped_gun = 1
 
 [node name="PlayerHUD" parent="." instance=ExtResource("3_wu84c")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
+collision_layer = 3
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 mesh = SubResource("BoxMesh_vue75")
@@ -66,6 +112,8 @@ shape = SubResource("BoxShape3D_l6cm7")
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2.5, 0)
+collision_layer = 3
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
 mesh = SubResource("BoxMesh_ekxnf")
@@ -75,6 +123,8 @@ shape = SubResource("BoxShape3D_bqqt6")
 
 [node name="StaticBody3D3" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2.5, 0)
+collision_layer = 3
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3"]
 mesh = SubResource("BoxMesh_ekxnf")
@@ -84,6 +134,8 @@ shape = SubResource("BoxShape3D_bqqt6")
 
 [node name="StaticBody3D4" type="StaticBody3D" parent="."]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 2.5, -5)
+collision_layer = 3
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D4"]
 mesh = SubResource("BoxMesh_ekxnf")
@@ -93,6 +145,8 @@ shape = SubResource("BoxShape3D_bqqt6")
 
 [node name="StaticBody3D5" type="StaticBody3D" parent="."]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 2.5, 5)
+collision_layer = 3
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D5"]
 mesh = SubResource("BoxMesh_ekxnf")
@@ -102,6 +156,8 @@ shape = SubResource("BoxShape3D_bqqt6")
 
 [node name="StaticBody3D6" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+collision_layer = 3
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D6"]
 mesh = SubResource("BoxMesh_vue75")
@@ -122,7 +178,79 @@ mesh = SubResource("BoxMesh_rtw2f")
 text = "Shooting Range"
 font_size = 50
 
+[node name="GodotButton" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6045823, 1.0572274, -4.2388177)
+
+[node name="Label3D" type="Label3D" parent="GodotButton"]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+text = "Made with Godot
+
+
+
+
+
+
+
+
+Shoot to open Godot Website"
+font_size = 64
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GodotButton"]
+shape = SubResource("BoxShape3D_tbmy8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GodotButton"]
+mesh = SubResource("BoxMesh_5dd4i")
+
+[node name="GitHubButton" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.6045823, 2.6612122, -4.2388177)
+
+[node name="Label3D" type="Label3D" parent="GitHubButton"]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+text = "Open-source
+
+
+
+
+
+
+
+Shoot to open GitHub page"
+font_size = 64
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GitHubButton"]
+shape = SubResource("BoxShape3D_tbmy8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GitHubButton"]
+mesh = SubResource("BoxMesh_lgwnu")
+
+[node name="UserDirButton" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.605, 3.992, -4.239)
+
+[node name="Label3D" type="Label3D" parent="UserDirButton"]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, -0.032619, 0)
+text = "
+
+
+
+
+
+
+Shoot to open data directory"
+font_size = 64
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="UserDirButton"]
+shape = SubResource("BoxShape3D_tbmy8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="UserDirButton"]
+mesh = SubResource("BoxMesh_flqon")
+
 [node name="Label3D2" type="Label3D" parent="."]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 2.454688, 4.895659)
 text = "Shoot the buttons"
 font_size = 50
+
+[node name="Title" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.383414, -4.896)
+text = "TunnelShooter
+"
+font_size = 128

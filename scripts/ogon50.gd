@@ -1,30 +1,13 @@
-extends Node3D
+class_name gun_Ogon50
+extends BasePistol
 
-@onready var ray: RayCast3D = $RayCast3D
-@onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var slide: MeshInstance3D = $Slide
-
-@export var full_auto: bool = false
-@export var plus_one: bool = true
-@export var recoil_amount: float = 0.2
-@export var recoil_recovery: float = 0.2
-@export var trigger_time: float = 0.15
-@export var viewpunch: float = 0.2
-@export var gunpunch: float = 0.33
-@export var bullet_energy: float = 20.0
-@export var bullet_penetration: float = 10.0
-
-@export var max_ammo: int = 7
-var ammo: int = 0
-
-const sfx_shoot = preload("res://assets/audio/sfx/weapons/caliber/50_shoot.wav")
-const sfx_crack = preload("res://assets/audio/sfx/weapons/caliber/45_crack.wav")
-
 var slide_base_pos: Vector3
 
-signal reload_finished
-
 func _ready() -> void:
+	sfx_shoot = preload("res://assets/audio/sfx/weapons/caliber/50_shoot.wav")
+	sfx_crack = preload("res://assets/audio/sfx/weapons/caliber/45_crack.wav")
+	trigger_time = 0.2
 	ammo = max_ammo
 	slide_base_pos = slide.position
 
@@ -53,23 +36,6 @@ func _process(_delta: float) -> void:
 	if ammo <= 0:
 		slide.position.z = slide_base_pos.z + 0.125
 	slide.position = slide.position.lerp(slide_base_pos, 0.2)
-
-func playsound(stream: AudioStream, volume: float=1.0):
-	GLOBAL.playsound3d(stream, global_position, volume)
-
-func apply_punch(dir_min: Vector3, dir_max: Vector3):
-	get_parent().punch_target += Vector3(
-		randf_range(dir_min.x, dir_max.x),
-		randf_range(dir_min.y, dir_max.y),
-		randf_range(dir_min.z, dir_max.z)
-	)
-
-func apply_hard_punch(dir_min: Vector3, dir_max: Vector3):
-	get_parent().punch += Vector3(
-		randf_range(dir_min.x, dir_max.x),
-		randf_range(dir_min.y, dir_max.y),
-		randf_range(dir_min.z, dir_max.z)
-	)
 
 func reload():
 	GLOBAL.player.gun_controller.reloading = true

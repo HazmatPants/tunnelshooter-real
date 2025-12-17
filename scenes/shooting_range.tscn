@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://db3x6hhv5s5yi"]
+[gd_scene load_steps=34 format=3 uid="uid://db3x6hhv5s5yi"]
 
 [ext_resource type="Script" uid="uid://byt425rt380ht" path="res://scripts/shooting_range.gd" id="1_bk2xl"]
 [ext_resource type="PackedScene" uid="uid://cgjj2bmatef67" path="res://scenes/player.tscn" id="1_pxwje"]
@@ -10,6 +10,7 @@
 [ext_resource type="FontFile" uid="uid://dcix7ee6kybk6" path="res://assets/fonts/JetBrainsMono-Bold.ttf" id="5_xbf1c"]
 [ext_resource type="PackedScene" uid="uid://bet7nsgnr3kr6" path="res://scenes/score_counter.tscn" id="6_r88yb"]
 [ext_resource type="PackedScene" uid="uid://tc5v8c60p5fe" path="res://scenes/ammoinator.tscn" id="9_mt837"]
+[ext_resource type="PackedScene" uid="uid://cv04j6u6ilol5" path="res://scenes/turret.tscn" id="11_5ovby"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sugp2"]
 size = Vector3(16, 0.1, 85)
@@ -92,34 +93,39 @@ script = ExtResource("1_bk2xl")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Lights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.160143, 0)
-omni_range = 23.759394
+omni_range = 20.0
+omni_attenuation = 0.8
 
 [node name="OmniLight3D2" type="OmniLight3D" parent="Lights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.16, 12)
-omni_range = 23.759394
+omni_range = 20.0
+omni_attenuation = 0.8
 
 [node name="OmniLight3D3" type="OmniLight3D" parent="Lights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.16, -12)
-omni_range = 23.759394
+omni_range = 20.0
+omni_attenuation = 0.8
 
 [node name="OmniLight3D4" type="OmniLight3D" parent="Lights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.16, 41.188328)
-omni_range = 23.759394
+omni_range = 20.0
+omni_attenuation = 0.8
 
 [node name="OmniLight3D5" type="OmniLight3D" parent="Lights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.28694, 7.16, 41.188328)
-omni_range = 23.759394
+omni_range = 20.0
+omni_attenuation = 0.8
 
 [node name="OmniLight3D6" type="OmniLight3D" parent="Lights"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.023518, 7.16, 41.188328)
-omni_range = 23.759394
+omni_range = 20.0
+omni_attenuation = 0.8
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("2_ca51o")
 
 [node name="Player" parent="." instance=ExtResource("1_pxwje")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4513435, 13.822091)
-equipped_gun = 5
 
 [node name="PlayerHUD" parent="." instance=ExtResource("2_fj3q4")]
 
@@ -386,3 +392,6 @@ shape = SubResource("BoxShape3D_mt837")
 
 [node name="Ammoinator" parent="." instance=ExtResource("9_mt837")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 6.750885, 0.8760892, 14.803541)
+
+[node name="Turret" parent="." instance=ExtResource("11_5ovby")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.126287, 0.09999995, 27.23885)

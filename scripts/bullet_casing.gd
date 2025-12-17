@@ -32,7 +32,8 @@ const CASING_MESHES = {
 func casing_ready() -> void:
 	if type in CASING_MESHES:
 		var mesh = CASING_MESHES[type].instantiate()
-		print("created casing mesh with type: ", type)
+		if GLOBAL.debug:
+			print("created casing mesh with type: ", type)
 		add_child(mesh)
 	var tween = create_tween()
 	tween.tween_interval(20.0)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=28 format=3 uid="uid://2rfhwwu7dd13"]
 
-[ext_resource type="Script" uid="uid://d20yi1eqkfl88" path="res://scripts/sz19.gd" id="1_3i0ud"]
+[ext_resource type="Script" uid="uid://dqq83ff0n1nyo" path="res://scripts/sz_19_auto.gd" id="1_3i0ud"]
 [ext_resource type="AudioStream" uid="uid://dhxhwl8dnu7a6" path="res://assets/audio/sfx/weapons/sz19/ogon19_slideforward.ogg" id="2_3i0ud"]
 [ext_resource type="AudioStream" uid="uid://yv0x05q50xm0" path="res://assets/audio/sfx/weapons/sz19/load1.wav" id="3_3i0ud"]
 [ext_resource type="AudioStream" uid="uid://c73cnx85c6ixk" path="res://assets/audio/sfx/weapons/foley2.ogg" id="4_5arli"]
@@ -385,11 +385,6 @@ size = Vector3(0.05, 0.315, 0.01)
 
 [node name="SZ 19" type="Node3D"]
 script = ExtResource("1_3i0ud")
-full_auto = true
-recoil_amount = 0.05
-viewpunch = 0.1
-gunpunch = 0.025
-max_ammo = 24
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

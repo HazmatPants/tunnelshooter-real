@@ -90,14 +90,16 @@ func shoot(ray, bullet_energy, penetration_power):
 
 			var energy_cost = thickness * 10
 
-			print("Bullet hit:")
-			print("	Energy cost: ", energy_cost)
-			print("	Bullet energy: ", energy + penetration_power)
-			print("	Hit Node: ", collider)
+			if GLOBAL.debug:
+				print("Bullet hit:")
+				print("	Energy cost: ", energy_cost)
+				print("	Bullet energy: ", energy + penetration_power)
+				print("	Hit Node: ", collider)
 
 			if energy + penetration_power > energy_cost:
 				# Penetrate
-				print("	penetrated")
+				if GLOBAL.debug:
+					print("	penetrated")
 				energy -= energy_cost
 				origin = hit_pos + direction * (thickness + 0.5)
 				continue
@@ -138,7 +140,7 @@ func get_penetration_thickness(
 func spawn_casing(tx: Transform3D, dir):
 	var casing: RigidBody3D = preload("res://scenes/bullet_casing.tscn").instantiate()
 	get_tree().current_scene.add_child(casing)
-	casing.type = GLOBAL.GUN_CALS_INT[GLOBAL.player.equipped_gun]
+	casing.type = GunManager.GUNS[GLOBAL.player.equipped_gun]["caliber_id"]
 	casing.global_position = tx.origin
 	casing.global_rotation = tx.basis.get_euler()
 	var c_vel: Vector3 = dir

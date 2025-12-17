@@ -18,20 +18,18 @@ func refresh_list():
 	for child in list.get_children():
 		child.queue_free()
 
-	var guns = GLOBAL.GUNS
+	var guns = GunManager.GUNS
 
 	for gun in guns:
-		print(gun)
-		if gun == "NONE": continue
 		var button := Button.new()
-		button.text = GLOBAL.GUN_NAMES[GLOBAL.GUNS[gun]]
-		button.pressed.connect(give_gun.bind(GLOBAL.GUNS[gun]))
+		button.text = GunManager.GUNS[gun]["name"]
+		button.pressed.connect(give_gun.bind(GunManager.GUNS[gun]["id"]))
 		list.add_child(button)
 	await list.resized
 	$Panel.size = list.size
 	$Panel.pivot_offset = list.size / 2
 	$Panel.position = list.position
 
-func give_gun(gun: GLOBAL.GUNS):
+func give_gun(gun: String):
 	GLOBAL.playsound(preload("res://assets/audio/sfx/ui/ui_attach.ogg"), 1.0, 1.0, "Master")
 	GLOBAL.player.give_gun(gun)

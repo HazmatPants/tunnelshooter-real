@@ -1,11 +1,12 @@
-[gd_scene load_steps=22 format=3 uid="uid://oa37yv848ao3"]
+[gd_scene load_steps=23 format=3 uid="uid://oa37yv848ao3"]
 
 [ext_resource type="Script" uid="uid://h8ktifmretrd" path="res://scripts/gi_mk_1.gd" id="1_3i2sj"]
 [ext_resource type="AudioStream" uid="uid://gaxffh1ikwdm" path="res://assets/audio/sfx/weapons/gi_mk1/gi_mk1_sliderelease.wav" id="2_fk7aq"]
 [ext_resource type="AudioStream" uid="uid://drpaj2h3c6t54" path="res://assets/audio/sfx/weapons/sonorous.wav" id="3_lhtks"]
-[ext_resource type="AudioStream" uid="uid://bb164bop1pen2" path="res://assets/audio/sfx/weapons/gi_mk1/gi_mk1_mag_out.wav" id="4_ssgk2"]
-[ext_resource type="AudioStream" uid="uid://g4tksulcck2q" path="res://assets/audio/sfx/weapons/gi_mk1/gi_mk1_mag_in.wav" id="5_beyhb"]
+[ext_resource type="AudioStream" uid="uid://dut1byrgil04l" path="res://assets/audio/sfx/weapons/gi_mk1/gi_mk1_mag_out.wav" id="4_3i2sj"]
+[ext_resource type="AudioStream" uid="uid://xkvuc85c543f" path="res://assets/audio/sfx/weapons/gi_mk1/gi_mk1_mag_in.wav" id="5_beyhb"]
 [ext_resource type="Material" uid="uid://bmcbupdttg412" path="res://assets/materials/gun_steel.tres" id="6_2kl8e"]
+[ext_resource type="Material" uid="uid://vfq31ptkijil" path="res://assets/materials/polymer.tres" id="7_fk7aq"]
 
 [sub_resource type="Animation" id="Animation_buff3"]
 length = 0.001
@@ -100,7 +101,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.96666664, 1.2333333),
 "transitions": PackedFloat32Array(1, 1, 1),
 "values": [{
-"args": [ExtResource("4_ssgk2"), 1.0],
+"args": [ExtResource("4_3i2sj"), 1.0],
 "method": &"playsound"
 }, {
 "args": [ExtResource("5_beyhb"), 1.0],
@@ -141,7 +142,7 @@ material = ExtResource("6_2kl8e")
 size = Vector3(0.06, 0.06, 0.5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_t6oaa"]
-material = ExtResource("6_2kl8e")
+material = ExtResource("7_fk7aq")
 size = Vector3(0.04, 0.25, 0.08)
 
 [sub_resource type="BoxMesh" id="BoxMesh_88qyl"]
@@ -187,8 +188,6 @@ height = 0.5
 
 [node name="GI mk 1" type="Node3D"]
 script = ExtResource("1_3i2sj")
-recoil_amount = 0.05
-trigger_time = 0.1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

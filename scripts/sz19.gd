@@ -1,32 +1,27 @@
-extends Node3D
+class_name gun_SZ19
+extends BasePistol
 
-@onready var ray: RayCast3D = $RayCast3D
-@onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var slide: MeshInstance3D = $Slide
 
-@export var full_auto: bool = false
-@export var plus_one: bool = false
-@export var recoil_amount: float = 0.1
-@export var recoil_recovery: float = 0.6
-@export var trigger_time: float = 0.075
-@export var viewpunch: float = 0.2
-@export var gunpunch: float = 0.2
-@export var bullet_energy: float = 20.0
-@export var bullet_penetration: float = 5.0
-
-@export var max_ammo: int = 8
-var ammo: int = 0
-
-const sfx_shoot = preload("res://assets/audio/sfx/weapons/caliber/45_crack.wav")
-const sfx_crack = preload("res://assets/audio/sfx/weapons/caliber/45_shoot.wav")
-
 var slide_base_pos: Vector3
-
-signal reload_finished
 
 func _ready() -> void:
 	ammo = max_ammo
 	slide_base_pos = slide.position
+	plus_one = false
+	recoil_amount = 0.1
+	recoil_recovery = 0.6
+	trigger_time = 0.075
+	viewpunch = 0.2
+	gunpunch = 0.2
+	bullet_energy = 10.0
+	bullet_penetration = 5.0
+
+	max_ammo = 8
+	ammo = max_ammo
+
+	sfx_shoot = preload("res://assets/audio/sfx/weapons/caliber/45_crack.wav")
+	sfx_crack = preload("res://assets/audio/sfx/weapons/caliber/45_shoot.wav")
 
 func shoot():
 	ammo -= 1
@@ -59,39 +54,26 @@ func _process(_delta: float) -> void:
 		slide.position.z = slide_base_pos.z + 0.125
 	slide.position = slide.position.lerp(slide_base_pos, 0.2)
 
-func playsound(stream: AudioStream, volume: float=1.0):
-	GLOBAL.playsound3d(stream, global_position, volume)
+	if Input.is_action_pressed("lmb"):
+		_reload_cancel = true
 
-func play_rand_sound(streams: Array, volume: float=1.0):
-	GLOBAL.playsound3d(GLOBAL.randsfx(streams), global_position, volume)
-
-func apply_punch(dir_min: Vector3, dir_max: Vector3):
-	get_parent().punch_target += Vector3(
-		randf_range(dir_min.x, dir_max.x),
-		randf_range(dir_min.y, dir_max.y),
-		randf_range(dir_min.z, dir_max.z)
-	)
-
-func apply_hard_punch(dir_min: Vector3, dir_max: Vector3):
-	get_parent().punch += Vector3(
-		randf_range(dir_min.x, dir_max.x),
-		randf_range(dir_min.y, dir_max.y),
-		randf_range(dir_min.z, dir_max.z)
-	)
-
+var _reload_cancel
 func reload():
 	GLOBAL.player.gun_controller.reloading = true
+	_reload_cancel = false
 	if ammo > 0:
 		anim.play("slideback")
 		await anim.animation_finished
 	while ammo < max_ammo and GLOBAL.player.reserve_ammo > 0:
+		if _reload_cancel:
+			break
 		if ammo > max_ammo - 8 or GLOBAL.player.reserve_ammo < 8:
 			while ammo < max_ammo:
 				anim.play("reload_1")
 				await anim.animation_finished
 				ammo += 1
 				GLOBAL.player.reserve_ammo -= 1
-				if !GLOBAL.player.reserve_ammo > 0:
+				if !GLOBAL.player.reserve_ammo > 0 or _reload_cancel:
 					break
 		elif GLOBAL.player.reserve_ammo >= 8:
 			while ammo <= max_ammo - 8:
@@ -99,7 +81,7 @@ func reload():
 				ammo += 8
 				GLOBAL.player.reserve_ammo -= 8
 				await anim.animation_finished
-				if !GLOBAL.player.reserve_ammo > 8:
+				if !GLOBAL.player.reserve_ammo > 8 or _reload_cancel:
 					break
 	await get_tree().create_timer(0.1).timeout
 	anim.play("prime")

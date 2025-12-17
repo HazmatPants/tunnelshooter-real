@@ -1,11 +1,13 @@
-[gd_scene load_steps=23 format=3 uid="uid://bj6hvxulhfg7"]
+[gd_scene load_steps=25 format=3 uid="uid://bj6hvxulhfg7"]
 
-[ext_resource type="Script" uid="uid://h8ktifmretrd" path="res://scripts/gi_mk_1.gd" id="1_pqr04"]
+[ext_resource type="Script" uid="uid://dh4r3tkt0qyos" path="res://scripts/gi_mk_1_auto.gd" id="1_rjrv0"]
 [ext_resource type="AudioStream" uid="uid://gaxffh1ikwdm" path="res://assets/audio/sfx/weapons/gi_mk1/gi_mk1_sliderelease.wav" id="2_ysls0"]
 [ext_resource type="AudioStream" uid="uid://drpaj2h3c6t54" path="res://assets/audio/sfx/weapons/sonorous.wav" id="3_rjrv0"]
-[ext_resource type="AudioStream" uid="uid://bb164bop1pen2" path="res://assets/audio/sfx/weapons/gi_mk1/gi_mk1_mag_out.wav" id="4_67skc"]
-[ext_resource type="AudioStream" uid="uid://g4tksulcck2q" path="res://assets/audio/sfx/weapons/gi_mk1/gi_mk1_mag_in.wav" id="5_42kqr"]
+[ext_resource type="AudioStream" uid="uid://bjo0pxg0qh0gi" path="res://assets/audio/sfx/weapons/gununloadmag.ogg" id="4_ysls0"]
+[ext_resource type="AudioStream" uid="uid://cy5e2ftu12cqx" path="res://assets/audio/sfx/weapons/foley3.wav" id="5_ysls0"]
 [ext_resource type="Material" uid="uid://bmcbupdttg412" path="res://assets/materials/gun_steel.tres" id="6_js4ul"]
+[ext_resource type="AudioStream" uid="uid://qo4mnua58078" path="res://assets/audio/sfx/weapons/gi_mk1/gi_mk1_mag_in_big.wav" id="6_ysls0"]
+[ext_resource type="Material" uid="uid://vfq31ptkijil" path="res://assets/materials/polymer.tres" id="8_rjrv0"]
 
 [sub_resource type="Animation" id="Animation_buff3"]
 length = 0.001
@@ -82,14 +84,14 @@ tracks/0/enabled = true
 tracks/0/path = NodePath("Magazine")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, -0.1, 0.02, 0.36666667, 1, 0, -2, 0.3, 0.5, 1, 0, -2, 0.3, 0.6666667, 1, 0, 0, 1, 0.9, 1, 0, -0.4, 0, 1.4, 1, 0, -0.4, 0.03, 1.7, 1, 0, -0.2, 0.025, 1.8666667, 1, 0, -0.1, 0.02)
+tracks/0/keys = PackedFloat32Array(0, 1, 0, -0.1, 0.02, 0.20000002, 1, 0, -2, 0.3, 0.33333334, 1, 0, -2, 0.3, 0.5, 1, 0, 0, 1, 0.73333335, 1, 0, -0.4, 0, 1, 1, 0, -0.45800653, 0.018933576, 1.1666666, 1, 0, -0.35, 0, 1.3371634, 1, 0, -0.4, 0.019, 1.5333333, 1, 0, -0.3, 0.045, 1.6333333, 1, 0, -0.2, 0.035, 1.8333334, 1, 0, -0.1, 0.02)
 tracks/1/type = "rotation_3d"
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/path = NodePath("Magazine")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
-tracks/1/keys = PackedFloat32Array(0, 1, -0.07266376, 0, 0, 0.9973565, 0.90000004, 1, -0.07266376, 0, 0, 0.9973565, 1.4666667, 1, 0, 0, 0, 1, 1.7333333, 1, -0.07266376, 0, 0, 0.9973565)
+tracks/1/keys = PackedFloat32Array(0, 1, -0.07266376, 0, 0, 0.9973565, 0.73333335, 1, -0.07266376, 0, 0, 0.9973565, 1.3000001, 1, 0, 0, 0, 1, 1.5333333, 1, -0.07266376, 0, 0, 0.9973565)
 tracks/2/type = "method"
 tracks/2/imported = false
 tracks/2/enabled = true
@@ -97,13 +99,16 @@ tracks/2/path = NodePath(".")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 1.5333333, 1.9333333),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 1.2, 1.6, 1.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "values": [{
-"args": [ExtResource("4_67skc"), 1.0],
+"args": [ExtResource("4_ysls0"), 1.0],
 "method": &"playsound"
 }, {
-"args": [ExtResource("5_42kqr"), 1.0],
+"args": [ExtResource("5_ysls0"), 1.0],
+"method": &"playsound"
+}, {
+"args": [ExtResource("6_ysls0"), 1.0],
 "method": &"playsound"
 }, {
 "args": [ExtResource("3_rjrv0"), 0.01],
@@ -117,10 +122,13 @@ tracks/3/path = NodePath(".")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(1.8666667),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(1.18, 1.7666667),
+"transitions": PackedFloat32Array(1, 1),
 "values": [{
-"args": [Vector3(0.01, 0, 0), Vector3(0.05, 0, 0)],
+"args": [Vector3(0.05, 0, 0), Vector3(0.01, 0, 0)],
+"method": &"apply_punch"
+}, {
+"args": [Vector3(0.01, 0, 0), Vector3(0.03, 0, 0)],
 "method": &"apply_punch"
 }]
 }
@@ -141,7 +149,7 @@ material = ExtResource("6_js4ul")
 size = Vector3(0.06, 0.06, 0.5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_t6oaa"]
-material = ExtResource("6_js4ul")
+material = ExtResource("8_rjrv0")
 size = Vector3(0.04, 0.4, 0.08)
 
 [sub_resource type="BoxMesh" id="BoxMesh_88qyl"]
@@ -190,14 +198,7 @@ material = ExtResource("6_js4ul")
 size = Vector3(0.1, 0.1, 0.16)
 
 [node name="GI mk 1 auto" type="Node3D"]
-script = ExtResource("1_pqr04")
-full_auto = true
-recoil_amount = 0.05
-recoil_recovery = 0.8
-trigger_time = 0.1
-viewpunch = 0.05
-gunpunch = 0.05
-max_ammo = 30
+script = ExtResource("1_rjrv0")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -213,7 +214,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.085, -0.198)
 mesh = SubResource("BoxMesh_buff3")
 
 [node name="Magazine" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.9894399, 0.14494333, 0, -0.14494333, 0.9894399, 0, -0.1, 0.02)
+transform = Transform3D(1, 0, 0, 0, 0.98943985, 0.14494333, 0, -0.14494333, 0.98943985, 0, -0.1, 0.02)
 mesh = SubResource("BoxMesh_t6oaa")
 
 [node name="Trigger" type="MeshInstance3D" parent="."]
