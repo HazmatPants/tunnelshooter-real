@@ -391,7 +391,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_1e3ry")
 }
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="RearGrip" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.9894401, 0.14494339, 0, -0.14494339, 0.9894401, 0, -0.03557404, 0.009040136)
 mesh = SubResource("BoxMesh_ngd2f")
 
@@ -399,7 +399,7 @@ mesh = SubResource("BoxMesh_ngd2f")
 transform = Transform3D(1, 0, 0, 0, 0.9894401, 0.14494339, 0, -0.14494339, 0.9894401, 0, -0.24279001, 0.03941882)
 mesh = SubResource("BoxMesh_igbvm")
 
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+[node name="Foregrip" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.98921365, -0.14648017, 0, 0.14648017, 0.98921365, 0, -0.08008977, -0.26372805)
 mesh = SubResource("BoxMesh_igbvm")
 

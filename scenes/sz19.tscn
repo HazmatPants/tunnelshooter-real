@@ -23,14 +23,14 @@ tracks/0/keys = PackedFloat32Array(0, 1, 0, 0.125, -0.145)
 tracks/1/type = "position_3d"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("BulletCasing")
+tracks/1/path = NodePath("Round")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = PackedFloat32Array(0, 1, 0, 0.10574759, 0.00867527)
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("BulletCasing:visible")
+tracks/2/path = NodePath("Round:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -163,14 +163,14 @@ tracks/1/keys = {
 tracks/2/type = "position_3d"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("BulletCasing")
+tracks/2/path = NodePath("Round")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/keys = PackedFloat32Array(0, 1, 0, 0.106, 1, 0.23333333, 1, 0, 0.3, 0, 0.33333337, 1, 0, 0.1, 0)
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("BulletCasing:visible")
+tracks/3/path = NodePath("Round:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -206,7 +206,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("BulletCasing:visible")
+tracks/1/path = NodePath("Round:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -387,7 +387,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_1e3ry")
 }
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="RearGrip" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.9894401, 0.14494339, 0, -0.14494339, 0.9894401, 0, -0.03557404, 0.009040136)
 mesh = SubResource("BoxMesh_igbvm")
 
@@ -434,7 +434,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, -0.4061338)
 target_position = Vector3(0, 0, -100)
 collide_with_areas = true
 
-[node name="BulletCasing" parent="." instance=ExtResource("10_3cipk")]
+[node name="Round" parent="." instance=ExtResource("10_3cipk")]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.10574759, 0.00867527)
 visible = false
 

@@ -74,6 +74,7 @@ func reload():
 	if ammo == 0:
 		await get_tree().create_timer(0.1).timeout
 		anim.play("prime")
+		GLOBAL.player.reload_anim("prime")
 		await anim.animation_finished
 	GLOBAL.player.gun_controller.reloading = false
 	reload_finished.emit()

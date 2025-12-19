@@ -5,6 +5,7 @@ extends CharacterBody3D
 @onready var gun_controller: Node3D = $GunPosition
 @onready var foot_ray: RayCast3D = $FootRay
 @onready var hud: CanvasLayer = $"../PlayerHUD"
+@onready var anim: AnimationPlayer = $AnimationPlayer
 
 @export var move_speed: float = 4.0
 @export var sprint_speed: float = 6.5
@@ -234,8 +235,8 @@ func _physics_process(delta: float) -> void:
 
 	gun_controller.rotation += gun_controller.punch
 
-	if gun_controller.get_child_count() > 1:
-		gun = gun_controller.get_child(1)
+	if gun_controller.get_child_count() > gun_controller.base_child_count:
+		gun = gun_controller.get_child(gun_controller.base_child_count)
 
 	gun_controller.punch_target = gun_controller.punch_target.lerp(Vector3.ZERO, 0.1)
 	gun_controller.punch = gun_controller.punch.lerp(gun_controller.punch_target, 0.6)
@@ -259,6 +260,8 @@ func _physics_process(delta: float) -> void:
 				can_reload = reserve_ammo > 0
 				if can_reload:
 					gun.reload()
+					if anim.has_animation("reload_" + GunManager.GUNS[equipped_gun]["id"]):
+						reload_anim("reload")
 					await gun.reload_finished
 
 	if Input.is_action_just_pressed("inspect"):
@@ -317,9 +320,9 @@ func get_footstep_material() -> StringName:
 	return "metal"
 
 func give_gun(target_gun: String):
-	if gun_controller.get_child_count() > 1:
-		if gun_controller.get_child(1):
-			gun_controller.get_child(1).queue_free()
+	if gun_controller.get_child_count() > gun_controller.base_child_count:
+		if gun_controller.get_child(gun_controller.base_child_count):
+			gun_controller.get_child(gun_controller.base_child_count).queue_free()
 	gun = null
 	if target_gun != "":
 		var path = GunManager.GUNS[target_gun]["scene_path"]
@@ -349,3 +352,6 @@ func _hit_by_bullet(hit):
 	elif hit == $Body:
 		if health <= 0.0:
 			GLOBAL.player_fatal_hit = "body"
+
+func reload_anim(animation: String):
+	anim.play(animation + "_" + GunManager.GUNS[equipped_gun]["id"])

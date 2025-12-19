@@ -63,6 +63,7 @@ func reload():
 	_reload_cancel = false
 	if ammo > 0:
 		anim.play("slideback")
+		GLOBAL.player.reload_anim("slideback")
 		await anim.animation_finished
 	while ammo < max_ammo and GLOBAL.player.reserve_ammo > 0:
 		if _reload_cancel:
@@ -70,6 +71,7 @@ func reload():
 		if ammo > max_ammo - 8 or GLOBAL.player.reserve_ammo < 8:
 			while ammo < max_ammo:
 				anim.play("reload_1")
+				GLOBAL.player.reload_anim("reload_1")
 				await anim.animation_finished
 				ammo += 1
 				GLOBAL.player.reserve_ammo -= 1
@@ -78,6 +80,7 @@ func reload():
 		elif GLOBAL.player.reserve_ammo >= 8:
 			while ammo <= max_ammo - 8:
 				anim.play("reload_clip")
+				GLOBAL.player.reload_anim("reload_clip")
 				ammo += 8
 				GLOBAL.player.reserve_ammo -= 8
 				await anim.animation_finished
@@ -85,6 +88,7 @@ func reload():
 					break
 	await get_tree().create_timer(0.1).timeout
 	anim.play("prime")
+	GLOBAL.player.reload_anim("prime")
 	await anim.animation_finished
 	GLOBAL.player.gun_controller.reloading = false
 	reload_finished.emit()

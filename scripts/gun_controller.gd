@@ -1,6 +1,10 @@
 extends Node3D
 
 @onready var bump_ray: RayCast3D = $BumpRay
+@onready var left_hand: Node3D = $LHandPivot
+@onready var right_hand: Node3D = $RHandPivot
+@onready var left_hand_pos = $"../CameraPosition/LHandPos"
+@onready var right_hand_pos = $"../CameraPosition/RHandPos"
 
 @export var ricochet_threshold: float = 0.6
 
@@ -14,6 +18,11 @@ var punch := Vector3.ZERO
 
 var reloading: bool = false
 var inspecting: bool = false
+
+var base_child_count: int = 0
+
+func _ready() -> void:
+	base_child_count = get_child_count()
 
 func place_decal(pos: Vector3, normal: Vector3, collider: Node3D):
 	if not is_inside_tree(): return
@@ -44,6 +53,28 @@ func place_decal(pos: Vector3, normal: Vector3, collider: Node3D):
 	tween.tween_property(particles.decal, "texture_albedo:fill_to:x", 0.51, 1.0)
 	tween.tween_property(particles.decal, "texture_albedo:fill_to:y", 0.51, 1.0)
 	tween.finished.connect(particles.queue_free)
+
+func _process(_delta: float) -> void:
+	left_hand.visible = !inspecting
+	right_hand.visible = !inspecting
+	if owner.gun and not reloading:
+		if owner.gun.has_node("Foregrip"):
+			left_hand.global_position = left_hand.global_position.lerp(
+				owner.gun.get_node("Foregrip").global_position,
+				0.4
+			)
+		elif owner.gun.has_node("RearGrip"):
+			left_hand.global_position = left_hand.global_position.lerp(
+				owner.gun.get_node("RearGrip").global_position,
+				0.4
+			)
+		right_hand.global_position = right_hand.global_position.lerp(
+			owner.gun.get_node("RearGrip").global_position,
+			0.4
+		)
+			
+	left_hand.look_at(left_hand_pos.global_position)
+	right_hand.look_at(right_hand_pos.global_position)
 
 var distance: float = 0.0
 func _physics_process(_delta: float) -> void:
@@ -78,9 +109,10 @@ func shoot(ray, bullet_energy, penetration_power):
 		var collider = hit.collider
 
 		# Damage
-		if collider:
+		if collider.owner:
 			if collider.owner.has_method("_hit_by_bullet"):
 				collider.owner._hit_by_bullet(collider)
+		if collider:
 			if collider.has_method("_hit_by_bullet"):
 				collider._hit_by_bullet(collider)
 
