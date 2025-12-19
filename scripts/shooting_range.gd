@@ -7,6 +7,7 @@ func _ready() -> void:
 	AudioServer.get_bus_effect(1, 0).wet = 0.5
 
 	GLOBAL.init()
+	GLOBAL.initialized.emit()
 	for light in $Lights.get_children():
 		if light is Light3D:
 			light.visible = false

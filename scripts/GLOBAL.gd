@@ -4,8 +4,13 @@ extends Node
 
 var player: CharacterBody3D = null
 
+signal initialized
+
 func _ready() -> void:
-	init()
+	await init()
+	await ModManager.mods_loaded
+	await player.ready
+	initialized.emit()
 
 func init():
 	GunManager.init()
@@ -36,3 +41,9 @@ func playsound3d(stream: AudioStream, global_position: Vector3, volume_linear: f
 
 func randsfx(sound_list: Array) -> AudioStream:
 	return sound_list[randi_range(0, sound_list.size() - 1)]
+
+func show_notif(text: String, duration: float=3.0):
+	player.hud.show_notif(text, duration)
+
+func switch_to_scene(scene: PackedScene):
+	get_tree().change_scene_to_packed(scene)

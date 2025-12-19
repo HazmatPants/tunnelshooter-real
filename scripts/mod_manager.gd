@@ -4,6 +4,8 @@ const MOD_DIRECTORY = "user://mods"
 
 var loaded_mods = []
 
+signal mods_loaded
+
 func _ready() -> void:
 	var dir = DirAccess.open("user://")
 	if not dir.dir_exists(MOD_DIRECTORY):
@@ -17,7 +19,8 @@ func _ready() -> void:
 		file.store_string(readme)
 		file.close()
 
-	load_mods()
+	await load_mods()
+	mods_loaded.emit()
 
 func load_mods():
 	for mod in DirAccess.get_directories_at(MOD_DIRECTORY):

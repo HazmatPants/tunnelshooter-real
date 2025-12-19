@@ -76,3 +76,14 @@ func _process(delta: float) -> void:
 
 	$DamageOverlay.texture.gradient.set_offset(0, 1.0 - (pain_sine * mod))
 	$DamageOverlay.modulate.a = 1.0 - GLOBAL.player.health_percent
+
+func show_notif(text: String, duration: float=3.0):
+	var label = Label.new()
+	label.text = text
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var tween = label.create_tween()
+	tween.tween_interval(duration)
+	tween.tween_property(label, "modulate:a", 0.0, 1.0)
+	tween.finished.connect(label.queue_free)
+	
+	$NotifContainer.add_child(label)

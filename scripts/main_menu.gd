@@ -21,7 +21,7 @@ func _hit_by_bullet(hit):
 	if hit == $ShootingRangeButton:
 		GLOBAL.player.give_gun("")
 		await get_tree().create_timer(0.1).timeout
-		get_tree().change_scene_to_file("res://scenes/shooting_range.tscn")
+		GLOBAL.switch_to_scene(preload("res://scenes/shooting_range.tscn"))
 	if hit == $GodotButton and link_cooldown <= 0.0:
 		OS.shell_open("https://godotengine.org")
 		link_cooldown = 1.0

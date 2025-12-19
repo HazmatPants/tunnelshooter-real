@@ -163,3 +163,12 @@ grow_vertical = 2
 pivot_offset = Vector2(576, 324)
 mouse_filter = 2
 texture = SubResource("GradientTexture2D_or0tx")
+
+[node name="NotifContainer" type="VBoxContainer" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
