@@ -8,6 +8,7 @@ extends Node3D
 @export var prefire_time: float = -0.33
 
 var state = "idle"
+var functional: bool = true
 
 var idle_timer: float = 0.0
 var shoot_timer: float = prefire_time
@@ -21,22 +22,34 @@ var saw_player: bool = false
 var sees_player: bool = false
 
 const sfx_shoot = preload("res://assets/audio/sfx/weapons/caliber/45_crack.wav")
-const sfx_crack = preload("res://assets/audio/sfx/weapons/caliber/45_shoot.wav")
+const sfx_crack = preload("res://assets/audio/sfx/weapons/caliber/50_shoot.wav")
 
 func _process(delta: float) -> void:
-	if state == "shoot":
-		target_position = GLOBAL.player.global_position + (GLOBAL.player.velocity / 4)
-		target_rotation = global_transform.looking_at(target_position).basis.get_euler()
-	ypivot.rotation.y = lerp_angle(ypivot.rotation.y, target_rotation.y, 0.1)
-	xpivot.rotation.x = lerp_angle(xpivot.rotation.x, target_rotation.x, 0.1)
+	var led_energy = $Light.mesh.material.emission_energy_multiplier
+	$Light.mesh.material.emission_energy_multiplier = lerp(led_energy, 0.0, 0.4)
 
+	if not functional: 
+		var light_energy = $YPivot/XPivot/MeshInstance3D2/SpotLight3D.light_energy
+		$YPivot/XPivot/MeshInstance3D2/SpotLight3D.light_energy = lerp(light_energy, 0.0, 0.1)
+		return
+
+	if state == "shoot":
+		target_position = GLOBAL.player.get_node("Head").global_position + (GLOBAL.player.velocity / 4)
+		target_rotation = global_transform.looking_at(target_position).basis.get_euler()
+
+	if state == "idle":
+		ypivot.rotation.y = lerp_angle(ypivot.rotation.y, target_rotation.y, 0.01)
+		xpivot.rotation.x = lerp_angle(xpivot.rotation.x, target_rotation.x, 0.01)
+	elif state == "shoot":
+		ypivot.rotation.y = lerp_angle(ypivot.rotation.y, target_rotation.y, 0.1)
+		xpivot.rotation.x = lerp_angle(xpivot.rotation.x, target_rotation.x, 0.1)
 	xpivot.rotation.x = clampf(xpivot.rotation.x, 0.0, deg_to_rad(90))
 
 	if state == "idle":
 		idle_timer += delta
 		if idle_timer > 5.0:
 			target_rotation = Vector3(
-				randf_range(0.0, deg_to_rad(90)),
+				randf_range(0.0, deg_to_rad(45)),
 				randf_range(0.0, deg_to_rad(360)),
 				0.0
 			)
@@ -44,8 +57,12 @@ func _process(delta: float) -> void:
 			shoot_timer = prefire_time
 
 	vision_timer += delta
-	if vision_timer > 0.5:
+	if vision_timer > 0.25:
 		sees_player = can_see_player(GLOBAL.player)
+		$Light.mesh.material.emission_energy_multiplier = 10.0
+		GLOBAL.playsound3d(preload("res://assets/audio/sfx/weapons/turret/turret_scan.wav"),
+			global_position, 0.01
+		)
 		vision_timer = 0.0
 	if sees_player:
 		if not saw_player:
@@ -108,8 +125,8 @@ func shoot(ray, bullet_energy, penetration_power):
 	var direction = -ray.global_transform.basis.z.normalized()
 	var energy = bullet_energy
 
-	GLOBAL.playsound3d(sfx_shoot, global_position, 1.0, randf_range(0.98, 1.02))
-	GLOBAL.playsound3d(sfx_crack, global_position, randf_range(0.05, 0.2), randf_range(1.0, 1.25))
+	GLOBAL.playsound3d(sfx_shoot, global_position, 5.0, randf_range(0.98, 1.02))
+	GLOBAL.playsound3d(sfx_crack, global_position, randf_range(0.5, 1.0), randf_range(1.0, 1.25))
 	var muzzflash = preload("res://scenes/muzzle_flash.tscn").instantiate()
 	get_tree().current_scene.add_child(muzzflash)
 	muzzflash.global_position = ray.global_position
@@ -238,3 +255,11 @@ func can_see_player(player: Node3D) -> bool:
 		return true
 
 	return result.collider.owner == player
+
+func _hit_by_bullet(_hit):
+	if functional:
+		var tween = xpivot.create_tween()
+		tween.set_ease(Tween.EASE_OUT)
+		tween.set_trans(Tween.TRANS_BOUNCE)
+		tween.tween_property(xpivot, "rotation:x", deg_to_rad(-25), 1.0)
+	functional = false

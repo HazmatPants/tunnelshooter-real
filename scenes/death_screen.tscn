@@ -1,0 +1,138 @@
+[gd_scene load_steps=13 format=3 uid="uid://c35glhwe165ox"]
+
+[ext_resource type="Script" uid="uid://cb1fpjlmge08v" path="res://scripts/death_screen.gd" id="1_wtkkp"]
+[ext_resource type="Environment" uid="uid://clmdjl6m6i5ll" path="res://assets/res/default_environment.tres" id="2_vcvlw"]
+[ext_resource type="PackedScene" uid="uid://cgjj2bmatef67" path="res://scenes/player.tscn" id="4_enw0n"]
+[ext_resource type="PackedScene" uid="uid://vgep1fr31sdd" path="res://scenes/player_hud.tscn" id="5_6koal"]
+[ext_resource type="Material" uid="uid://bog1ytejugdae" path="res://assets/materials/void.tres" id="5_wfw3d"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_vue75"]
+material = ExtResource("5_wfw3d")
+size = Vector3(10, 0.2, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_l6cm7"]
+size = Vector3(10, 0.2, 10)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ekxnf"]
+material = ExtResource("5_wfw3d")
+size = Vector3(0.2, 5, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bqqt6"]
+size = Vector3(0.2, 5, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wu84c"]
+size = Vector3(2, 1, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8ln24"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0, 0.6999998, 1, 0.039215688)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rtw2f"]
+material = SubResource("StandardMaterial3D_8ln24")
+size = Vector3(2, 1, 0.2)
+
+[node name="Death Screen" type="Node3D"]
+script = ExtResource("1_wtkkp")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("2_vcvlw")
+
+[node name="Player" parent="." instance=ExtResource("4_enw0n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 3.5395932)
+
+[node name="PlayerHUD" parent="." instance=ExtResource("5_6koal")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+collision_layer = 3
+collision_mask = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("BoxMesh_vue75")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_l6cm7")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2.5, 0)
+collision_layer = 3
+collision_mask = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
+mesh = SubResource("BoxMesh_ekxnf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+shape = SubResource("BoxShape3D_bqqt6")
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2.5, 0)
+collision_layer = 3
+collision_mask = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3"]
+mesh = SubResource("BoxMesh_ekxnf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
+shape = SubResource("BoxShape3D_bqqt6")
+
+[node name="StaticBody3D4" type="StaticBody3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 2.5, -5)
+collision_layer = 3
+collision_mask = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D4"]
+mesh = SubResource("BoxMesh_ekxnf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D4"]
+shape = SubResource("BoxShape3D_bqqt6")
+
+[node name="StaticBody3D5" type="StaticBody3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 2.5, 5)
+collision_layer = 3
+collision_mask = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D5"]
+mesh = SubResource("BoxMesh_ekxnf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D5"]
+shape = SubResource("BoxShape3D_bqqt6")
+
+[node name="StaticBody3D6" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+collision_layer = 3
+collision_mask = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D6"]
+mesh = SubResource("BoxMesh_vue75")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D6"]
+shape = SubResource("BoxShape3D_l6cm7")
+
+[node name="MainMenuButton" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0572274, -4.2388177)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MainMenuButton"]
+shape = SubResource("BoxShape3D_wu84c")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MainMenuButton"]
+mesh = SubResource("BoxMesh_rtw2f")
+
+[node name="Label3D" type="Label3D" parent="MainMenuButton"]
+text = "Main Menu"
+font_size = 50
+
+[node name="Label3D2" type="Label3D" parent="."]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 2.454688, 4.895659)
+text = "Shoot the buttons"
+font_size = 50
+
+[node name="Title" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.383414, -4.896)
+text = "You Died"
+font_size = 128
+
+[node name="FatalHitLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.0804625, -4.896)
+text = "
+"
+font_size = 128

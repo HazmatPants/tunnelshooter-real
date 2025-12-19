@@ -3,20 +3,21 @@ extends Node
 @export var debug: bool = false
 
 var player: CharacterBody3D = null
+var player_fatal_hit := ""
 
 signal initialized
 
 func _ready() -> void:
+	await GunManager.init()
 	await init()
 	await ModManager.mods_loaded
-	await player.ready
-	initialized.emit()
 
 func init():
-	GunManager.init()
 	if is_inside_tree():
 		player = null
 		player = get_tree().current_scene.get_node_or_null("Player")
+	await player.ready
+	initialized.emit()
 
 func playsound(stream: AudioStream, volume_linear: float=1.0, pitch_scale: float=1.0, bus: String="SFX"):
 	var ap = AudioStreamPlayer.new()

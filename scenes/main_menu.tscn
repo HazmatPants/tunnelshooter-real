@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://chp56y0i0a2wj"]
+[gd_scene load_steps=25 format=3 uid="uid://chp56y0i0a2wj"]
 
 [ext_resource type="Environment" uid="uid://clmdjl6m6i5ll" path="res://assets/res/default_environment.tres" id="1_l6cm7"]
 [ext_resource type="Script" uid="uid://b2medua5x6adc" path="res://scripts/main_menu.gd" id="1_wu84c"]
@@ -8,6 +8,7 @@
 [ext_resource type="Material" uid="uid://ba5aoauwuhw3t" path="res://assets/materials/rough_metal.tres" id="6_rtw2f"]
 [ext_resource type="Texture2D" uid="uid://ddxmxgyyfy8mn" path="res://assets/textures/ui/icons/godot.svg" id="7_oa1go"]
 [ext_resource type="Texture2D" uid="uid://gkxp34iwiq8y" path="res://assets/textures/ui/icons/dolphin.svg" id="8_tbmy8"]
+[ext_resource type="AudioStream" uid="uid://cb4omkowiiboh" path="res://assets/audio/music/Saferoom.ogg" id="9_jk1qb"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_vue75"]
 material = ExtResource("6_rtw2f")
@@ -88,7 +89,7 @@ environment = ExtResource("1_l6cm7")
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.3365574, 0)
-omni_range = 10.0
+omni_range = 20.0
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="OmniLight3D"]
 stream = ExtResource("3_8ln24")
@@ -254,3 +255,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.383414, -4.896)
 text = "TunnelShooter
 "
 font_size = 128
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6522856, -3.947854)
+stream = ExtResource("9_jk1qb")
+autoplay = true
+bus = &"SFX"

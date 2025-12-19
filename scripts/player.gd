@@ -79,6 +79,9 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	health_percent = health / max_health
 
+	if health_percent <= 0.0:
+		get_tree().change_scene_to_file("res://scenes/death_screen.tscn")
+
 var trigger_time: float = 0.0
 var last_viewbob_sine: float = 0.0
 var was_on_floor: bool = true
@@ -329,7 +332,7 @@ func give_rand_gun():
 	give_gun(guns[randi_range(0, guns.size() - 1)])
 
 func _hit_by_bullet(hit):
-	GLOBAL.playsound(GLOBAL.randsfx(SFX_FLESH_HIT), 3.0)
+	GLOBAL.playsound(GLOBAL.randsfx(SFX_FLESH_HIT), 5.0, 1.0, "Master")
 	viewpunch_target += Vector3(
 		randf_range(-1, 1),
 		randf_range(-1, 1),
@@ -337,4 +340,12 @@ func _hit_by_bullet(hit):
 	) / 2
 	health -= randf_range(0.01, 0.05)
 	if hit == $Head:
+		GLOBAL.playsound(GLOBAL.randsfx(SFX_FLESH_HIT), 50.0, 1.0, "Master")
+		hud.get_node("Blackout").modulate.a = 1.0
+		await get_tree().create_timer(0.05).timeout
 		health = 0.0
+		if health <= 0.0:
+			GLOBAL.player_fatal_hit = "head"
+	elif hit == $Body:
+		if health <= 0.0:
+			GLOBAL.player_fatal_hit = "body"

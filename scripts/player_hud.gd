@@ -76,6 +76,7 @@ func _process(delta: float) -> void:
 
 	$DamageOverlay.texture.gradient.set_offset(0, 1.0 - (pain_sine * mod))
 	$DamageOverlay.modulate.a = 1.0 - GLOBAL.player.health_percent
+	$Blackout.modulate.a = lerp($Blackout.modulate.a, 1.0 - GLOBAL.player.health_percent, 0.05)
 
 func show_notif(text: String, duration: float=3.0):
 	var label = Label.new()

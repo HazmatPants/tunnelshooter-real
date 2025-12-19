@@ -1,6 +1,7 @@
 extends Node3D
 
 func _ready() -> void:
+	AudioServer.set_bus_effect_enabled(1, 0, true)
 	AudioServer.get_bus_effect(1, 0).room_size = 0.4
 	AudioServer.get_bus_effect(1, 0).damping = 0.5
 	AudioServer.get_bus_effect(1, 0).predelay_msec = 100.0
