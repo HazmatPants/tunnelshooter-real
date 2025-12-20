@@ -65,7 +65,7 @@ func _process(_delta: float) -> void:
 			)
 		elif owner.gun.has_node("RearGrip"):
 			left_hand.global_position = left_hand.global_position.lerp(
-				owner.gun.get_node("RearGrip").global_position,
+				owner.gun.get_node("RearGrip").global_position + Vector3(0.0, 0.0, -0.025),
 				0.4
 			)
 		right_hand.global_position = right_hand.global_position.lerp(

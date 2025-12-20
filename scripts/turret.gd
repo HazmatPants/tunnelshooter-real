@@ -34,7 +34,7 @@ func _process(delta: float) -> void:
 		return
 
 	if state == "shoot":
-		target_position = GLOBAL.player.get_node("Head").global_position + (GLOBAL.player.velocity / 4)
+		target_position = GLOBAL.player.get_node("Body").global_position + (GLOBAL.player.velocity / 4)
 		target_rotation = global_transform.looking_at(target_position).basis.get_euler()
 
 	if state == "idle":

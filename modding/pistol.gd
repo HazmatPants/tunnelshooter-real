@@ -13,6 +13,7 @@ var viewpunch: float = 0.2
 var gunpunch: float = 0.33
 var bullet_energy: float = 20.0
 var bullet_penetration: float = 5.0
+var ads_speed: float = 0.2
 
 var max_ammo: int = 12
 var ammo: int = 0

@@ -200,6 +200,8 @@ func _physics_process(delta: float) -> void:
 	var target_tx: Transform3D
 	if Input.is_action_pressed("rmb"):
 		target_tx = camera_position.global_transform.translated_local(Vector3(0, -0.173, -0.5))
+		if gun:
+			lerp_speed = gun.ads_speed
 	elif not Input.is_action_pressed("lean_left") and not Input.is_action_pressed("lean_right"):
 		target_tx = camera_position.global_transform.translated_local(Vector3(0.1, -0.3, -0.2))
 	else:

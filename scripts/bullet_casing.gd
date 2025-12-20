@@ -20,13 +20,20 @@ const SFX_CASING_BOUNCE: Dictionary = {
 		preload("res://assets/audio/sfx/physics/casing/50/50_bounce2.wav"),
 		preload("res://assets/audio/sfx/physics/casing/50/50_bounce3.wav"),
 		preload("res://assets/audio/sfx/physics/casing/50/50_bounce4.wav")
+	],
+	"12mm_static": [
+		preload("res://assets/audio/sfx/physics/casing/50/50_bounce1.wav"),
+		preload("res://assets/audio/sfx/physics/casing/50/50_bounce2.wav"),
+		preload("res://assets/audio/sfx/physics/casing/50/50_bounce3.wav"),
+		preload("res://assets/audio/sfx/physics/casing/50/50_bounce4.wav")
 	]
 }
 
 const CASING_MESHES = {
 	"9mm": preload("res://assets/res/casing/9mm.tscn"),
 	"45gi": preload("res://assets/res/casing/45gi.tscn"),
-	"50ae": preload("res://assets/res/casing/50ae.tscn")
+	"50ae": preload("res://assets/res/casing/50ae.tscn"),
+	"12mm_static": preload("res://assets/res/casing/50ae.tscn"),
 }
 
 func casing_ready() -> void:

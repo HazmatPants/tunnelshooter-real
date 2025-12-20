@@ -9,6 +9,7 @@ func _ready() -> void:
 	sfx_crack = preload("res://assets/audio/sfx/weapons/caliber/45_crack.wav")
 	trigger_time = 0.2
 	max_ammo = 7
+	ads_speed = 0.1
 	ammo = max_ammo
 	slide_base_pos = slide.position
 

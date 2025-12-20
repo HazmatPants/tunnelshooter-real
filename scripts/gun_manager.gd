@@ -7,50 +7,64 @@ func init():
 	register_round("45gi", ".45 GI", ".45 Grigga Industries")
 	register_round("50ae", ".50 AE", ".50 Action Express")
 	register_round("9mm", "9x19mm", "9x19mm Parabellum")
+	register_round("12mm_static", "12mm Static", "12mm Static Railcannon Payload")
 
 	register_gun(
 		"gi_mk_1",
 		"GI Mk. 1",
 		"45gi",
 		"res://scenes/gi_mk_1.tscn",
-		"A .45 caliber handgun designed by Grigga Industries. Higher recoil compared to 9x19mm, but more powerful and has a light trigger for high fire rate. Features glow-in-the-dark iron sights for low-light encounters.\n\n"
+		"A .45 caliber handgun designed by Grigga Industries. Higher recoil compared to 9x19mm, but more powerful and has a light trigger for high fire rate. Features glow-in-the-dark iron sights for low-light encounters.\n\n",
+		"Grigga Industries"
 	)
 	register_gun(
 		"gi_mk_1_auto",
 		"GI Mk. 1 Auto Mod",
 		"45gi",
 		"res://scenes/gi_mk_1_auto.tscn",
-		"A modified GI Mk. 1 handgun with the disconnector removed, allowing full auto fire. Has a large muzzle brake to help with the immense recoil.\n\n"
+		"A modified GI Mk. 1 handgun with the disconnector removed, allowing full auto fire. Has a large muzzle brake to help with the immense recoil.\n\n",
+		"Grigga Industries"
 	)
 	register_gun(
 		"ogon50",
 		"Ogon .50",
 		"50ae",
 		"res://scenes/ogon50.tscn",
-		"A powerful .50 AE handgun designed by Ogon Military Industries. Has a lot of kick and a heavy trigger, but extreme stopping power.\n\n"
+		"A powerful .50 AE handgun designed by Ogon Military Industries. Has a lot of kick and a heavy trigger, but extreme stopping power.\n\n",
+		"Ogon Military Industries"
 	)
 	register_gun(
 		"ogon50_auto",
 		"Ogon .50 Auto Mod",
 		"50ae",
 		"res://scenes/ogon50_auto.tscn",
-		"\"This was a mistake.\"\n\nAn absurd modification of the Ogon .50 with the disconnector removed, allowing full auto fire. Fitted with an extended mag and a foregrip in a futile attempt at recoil control.\n\n"
+		"\"This was a mistake.\"\n\nAn absurd modification of the Ogon .50 with the disconnector removed, allowing full auto fire. Fitted with an extended mag and a foregrip in a futile attempt at recoil control.\n\n",
+		"Ogon Military Industries"
 	)
 	register_gun(
 		"sz19",
 		"SZ 19",
 		"9mm",
 		"res://scenes/sz19.tscn",
-		"A 9x19mm top-loading handgun designed by Seeg Zauer.\n\n"
+		"A 9x19mm top-loading handgun designed by Seeg Zauer.\n\n",
+		"Seeg Zauer"
 	)
 	register_gun(
 		"sz19_auto",
 		"SZ 19 Auto Mod",
 		"9mm",
 		"res://scenes/sz19_auto.tscn",
-		"A modifed SZ 19 with the disconnector removed, allowing full-auto fire. Due to the extended mag, it requires multiple clips to reload from empty.\n\n"
+		"A modifed SZ 19 with the disconnector removed, allowing full-auto fire. Due to the extended mag, it requires multiple clips to reload from empty.\n\n",
+		"Seeg Zauer"
 	)
-
+	register_gun(
+		"static_rc",
+		"Static RC12",
+		"12mm_static",
+		"res://scenes/static_rc.tscn",
+		"A high-power railcannon developed by Static Corporation\n\n",
+		"Static Corporation"
+	)
 	print("Registered %s guns" % GUNS.keys().size())
 
 func register_round(
