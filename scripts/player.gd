@@ -5,6 +5,7 @@ extends CharacterBody3D
 @onready var gun_controller: Node3D = $GunPosition
 @onready var foot_ray: RayCast3D = $FootRay
 @onready var hud: CanvasLayer = $"../PlayerHUD"
+@onready var health: Node = $Health
 @onready var anim: AnimationPlayer = $AnimationPlayer
 
 @export var move_speed: float = 4.0
@@ -14,11 +15,11 @@ extends CharacterBody3D
 @export var viewbob_frequency: float = 2.0
 @export var viewbob_amplitude: float = 0.01
 @export var ambient_viewbob: float = 0.001
-@export var max_health: float = 0.5
-var health: float = max_health
+@export var max_health: float = 1.0
 var health_percent: float = 1.0
 
 @export var equipped_gun: String = ""
+@export var holstered_gun: String = ""
 @export var reserve_ammo: int = 90
 
 var hand_shakiness: float = 0.0
@@ -32,6 +33,8 @@ var viewbob_time: float = 0.0
 
 var is_moving: bool = false
 var gun: Node3D
+
+var stance: int = 0
 
 const SFX_FOOTSTEP: Dictionary = {
 	"metal": [
@@ -54,13 +57,27 @@ const SFX_FOOTSTEP: Dictionary = {
 	]
 }
 
-const SFX_FLESH_HIT = [
+const SFX_FLESH_HIT := [
 	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_1.wav"),
 	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_2.wav"),
 	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_3.wav"),
 	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_4.wav"),
 	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_5.wav"),
 	preload("res://assets/audio/sfx/physics/flesh/flesh_hit_6.wav")
+]
+
+const SFX_HOLSTER := [
+	preload("res://assets/audio/sfx/player/holster/velcro_holster_holster1.wav"),
+	preload("res://assets/audio/sfx/player/holster/velcro_holster_holster2.wav"),
+	preload("res://assets/audio/sfx/player/holster/velcro_holster_holster3.wav"),
+	preload("res://assets/audio/sfx/player/holster/velcro_holster_holster4.wav")
+]
+
+const SFX_UNHOLSTER := [
+	preload("res://assets/audio/sfx/player/holster/velcro_holster_draw1.wav"),
+	preload("res://assets/audio/sfx/player/holster/velcro_holster_draw2.wav"),
+	preload("res://assets/audio/sfx/player/holster/velcro_holster_draw3.wav"),
+	preload("res://assets/audio/sfx/player/holster/velcro_holster_draw4.wav")
 ]
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -78,7 +95,7 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _process(_delta: float) -> void:
-	health_percent = health / max_health
+	health_percent = health.brain_health / max_health
 
 	if health_percent <= 0.0:
 		get_tree().change_scene_to_file("res://scenes/death_screen.tscn")
@@ -90,6 +107,10 @@ var step_side: bool = true
 var was_moving: bool = false
 var trigger_pulled: bool = false
 var shot: bool = false
+var holstering: bool = false
+var holster_time: float = 0.0
+var holster_buff: String = ""
+var holster_ammo_buff: int = 0
 func _physics_process(delta: float) -> void:
 	var input_vector := Vector3.ZERO
 	var forward = -transform.basis.z.normalized()
@@ -139,20 +160,23 @@ func _physics_process(delta: float) -> void:
 
 	var lerp_speed = 0.15
 
+	var player_tx: Transform3D = global_transform
 	var camera_tx: Transform3D = camera_position.global_transform
 	if not is_zero_approx(_viewpunch.length()):
 		camera_tx = camera_tx.rotated_local(_viewpunch.normalized(), _viewpunch.length())
 	if Input.is_action_pressed("lean_left"):
-		camera_tx = camera_tx.translated_local(Vector3(-0.5, 0.0, 0))
-		camera_tx = camera_tx.rotated_local(Vector3(0, 0, 1), 0.1)
+		player_tx = player_tx.translated_local(Vector3(-1.0, 0.0, 0))
+		player_tx = player_tx.rotated_local(Vector3(0, 0, 1), 0.1)
 		lerp_speed = 0.1
 	elif Input.is_action_pressed("lean_right"):
-		camera_tx = camera_tx.translated_local(Vector3(0.5, 0.0, 0))
-		camera_tx = camera_tx.rotated_local(Vector3(0, 0, 1), -0.1)
+		player_tx = player_tx.translated_local(Vector3(1.0, 0.0, 0))
+		player_tx = player_tx.rotated_local(Vector3(0, 0, 1), -0.1)
 		lerp_speed = 0.1
+	camera_tx = camera_tx.translated_local(to_local(player_tx.origin))
 	camera_tx = camera_tx.rotated_local(Vector3.UP, gun_controller.recoil / 10)
 	camera.global_transform = camera.global_transform.interpolate_with(camera_tx, lerp_speed)
-
+	$CollisionShape3D.global_transform = $CollisionShape3D.global_transform.interpolate_with(player_tx, lerp_speed)
+	
 	camera_target_rotation.x -= mouse_delta.y * 0.004
 	camera_target_rotation.y -= mouse_delta.x * 0.004
 	camera_target_rotation.x = clampf(camera_target_rotation.x, -1.5, 1.5)
@@ -197,48 +221,106 @@ func _physics_process(delta: float) -> void:
 	if was_moving and not is_moving:
 		GLOBAL.playsound3d(GLOBAL.randsfx(SFX_FOOTSTEP[get_footstep_material()]), global_position, 0.05)
 
-	var target_tx: Transform3D
-	if Input.is_action_pressed("rmb"):
-		target_tx = camera_position.global_transform.translated_local(Vector3(0, -0.173, -0.5))
-		if gun:
-			lerp_speed = gun.ads_speed
-	elif not Input.is_action_pressed("lean_left") and not Input.is_action_pressed("lean_right"):
-		target_tx = camera_position.global_transform.translated_local(Vector3(0.1, -0.3, -0.2))
-	else:
-		target_tx = camera_position.global_transform.translated_local(Vector3(0.0, -0.3, -0.2))
-	if Input.is_action_pressed("lean_left"):
-		target_tx = target_tx.translated_local(Vector3(-0.48, 0.0, 0))
-		target_tx = target_tx.rotated_local(Vector3(0, 0, 1), 0.1)
-	elif Input.is_action_pressed("lean_right"):
-		target_tx = target_tx.translated_local(Vector3(0.48, 0.0, 0))
-		target_tx = target_tx.rotated_local(Vector3(0, 0, 1), -0.1)
-	elif not Input.is_action_pressed("rmb") and not gun_controller.reloading and not gun_controller.inspecting:
-		target_tx = camera_position.global_transform.translated_local(Vector3(0.1, -0.3, -0.2))
-		target_tx = target_tx.rotated_local(Vector3(1, 0, 0), -0.3)
-		target_tx = target_tx.rotated_local(Vector3(0, 0, 1), 0.5)
-	if gun_controller.reloading:
-		if Input.is_action_pressed("rmb"):
-			target_tx = target_tx.translated_local(Vector3(0.05, 0.0, 0.0))
-			target_tx = target_tx.rotated_local(Vector3(0, 1, 0), 0.1)
-			target_tx = target_tx.rotated_local(Vector3(1, 0, 0), 0.05)
-		else:
-			target_tx = target_tx.translated_local(Vector3(0.25, 0.15, -0.25))
-			target_tx = target_tx.rotated_local(Vector3(0, 1, 0), 1.0)
-			target_tx = target_tx.rotated_local(Vector3(1, 0, 0), 0.25)
-	if gun_controller.inspecting:
-			target_tx = target_tx.translated_local(Vector3(-0.1, 0.25, -0.25))
-			target_tx = target_tx.rotated_local(Vector3(0, 1, 0), 1.55)
-			lerp_speed = 0.2
-	gun_controller.global_transform = gun_controller.global_transform.interpolate_with(target_tx, lerp_speed) 
+	var is_leaning = Input.is_action_pressed("lean_left") or Input.is_action_pressed("lean_right")
 
-	gun_controller.global_position += velocity / 500
+	var target_tx: Transform3D
+
+	if gun:
+		target_tx = camera_position.global_transform.translated_local(Vector3(0, -0.173, gun.hip_distance))
+		target_tx = target_tx.translated_local(Vector3(0, 0.0, gun.ads_distance))
+		lerp_speed = gun.ads_speed
+		if stance == 0:
+			if not Input.is_action_pressed("rmb") and not gun_controller.reloading and not gun_controller.inspecting:
+				target_tx = camera_position.global_transform.translated_local(Vector3(0.1, -0.3, gun.hip_distance))
+				target_tx = target_tx.rotated_local(Vector3(1, 0, 0), -0.3)
+				target_tx = target_tx.rotated_local(Vector3(0, 0, 1), 0.5)
+		elif stance == 2:
+			if not Input.is_action_pressed("rmb") and not gun_controller.reloading and not gun_controller.inspecting:
+				target_tx = camera_position.global_transform.translated_local(Vector3(0.5, -0.3, -1.0))
+				target_tx = target_tx.rotated_local(Vector3(1, 0, 0), -0.5)
+				target_tx = target_tx.rotated_local(Vector3(0, 1, 0), 1.5)
+		elif not Input.is_action_pressed("rmb") and not is_leaning:
+			target_tx = camera_position.global_transform.translated_local(Vector3(0.1, -0.3, gun.hip_distance))
+		if Input.is_action_pressed("lean_left"):
+			target_tx = camera_position.global_transform.translated_local(Vector3(-1.0, -0.3, gun.hip_distance))
+			target_tx = target_tx.rotated_local(Vector3(0, 0, 1), 0.2)
+			lerp_speed = 0.1
+		elif Input.is_action_pressed("lean_right"):
+			target_tx = camera_position.global_transform.translated_local(Vector3(1.0, -0.3, gun.hip_distance))
+			target_tx = target_tx.rotated_local(Vector3(0, 0, 1), -0.2)
+			lerp_speed = 0.1
+		if gun_controller.reloading:
+			if gun:
+				if Input.is_action_pressed("rmb"):
+					target_tx = target_tx.rotated_local(Vector3(0, 1, 0), 0.1)
+					target_tx = target_tx.rotated_local(Vector3(1, 0, 0), 0.05)
+				else:
+					target_tx = target_tx.translated_local(gun.reload_position)
+					target_tx = target_tx.rotated_local(Vector3(0, 1, 0), 1.0)
+					target_tx = target_tx.rotated_local(Vector3(1, 0, 0), 0.25)
+		if gun_controller.inspecting:
+				target_tx = target_tx.translated_local(Vector3(-0.1, 0.25, -0.25))
+				target_tx = target_tx.rotated_local(Vector3(0, 1, 0), 1.55)
+				lerp_speed = 0.2
+		gun_controller.global_transform = gun_controller.global_transform.interpolate_with(target_tx, lerp_speed) 
+
+	if Input.is_action_just_pressed("stance"):
+		stance += 1
+		stance = stance % 3
+
+	if Input.is_action_just_pressed("holster"):
+		if not gun_controller.reloading or gun_controller.inspecting:
+			holstering = true
+
+	if holstering:
+		holster_time += delta
+		gun_controller.position = gun_controller.position.lerp(Vector3(0.0, -0.2, 1.0), 0.1)
+		if holster_time > 0.2:
+			if holster_buff:
+				GLOBAL.playsound3d(GLOBAL.randsfx(SFX_UNHOLSTER), gun_controller.global_position)
+				holstered_gun = equipped_gun
+				equipped_gun = holster_buff
+				holster_buff = ""
+				give_gun(equipped_gun, false)
+				gun.ammo = gun_controller.gun_ammo[equipped_gun]
+				holster_time = 0.0
+				holstering = false
+				return
+			if equipped_gun and holstered_gun:
+				GLOBAL.playsound3d(GLOBAL.randsfx(SFX_HOLSTER), gun_controller.global_position)
+				holster_buff = holstered_gun
+				gun_controller.gun_ammo[equipped_gun] = gun.ammo
+				give_gun("", false)
+				holster_time = 0.0
+				return
+			if equipped_gun:
+				GLOBAL.playsound3d(GLOBAL.randsfx(SFX_HOLSTER), gun_controller.global_position)
+				holstered_gun = equipped_gun
+				gun_controller.gun_ammo[equipped_gun] = gun.ammo
+				equipped_gun = ""
+				give_gun("", false)
+				holster_time = 0.0
+				holstering = false
+				return
+			if holstered_gun:
+				GLOBAL.playsound3d(GLOBAL.randsfx(SFX_UNHOLSTER), gun_controller.global_position)
+				equipped_gun = holstered_gun
+				give_gun(equipped_gun, false)
+				gun.ammo = gun_controller.gun_ammo[equipped_gun]
+				holstered_gun = ""
+				holster_time = 0.0
+				holstering = false
+				return
+
+	if gun and not gun.has_stock:
+		gun_controller.global_position += velocity / 500
 	gun_controller.rotation.x -= mouse_delta.y / 800
 	gun_controller.rotation.y -= mouse_delta.x / 800
 
 	gun_controller.rotation += gun_controller.punch
 
 	if gun_controller.get_child_count() > gun_controller.base_child_count:
-		gun = gun_controller.get_child(gun_controller.base_child_count)
+		update_gun()
 
 	gun_controller.punch_target = gun_controller.punch_target.lerp(Vector3.ZERO, 0.1)
 	gun_controller.punch = gun_controller.punch.lerp(gun_controller.punch_target, 0.6)
@@ -321,7 +403,7 @@ func get_footstep_material() -> StringName:
 				return collider.get_meta("material")
 	return "metal"
 
-func give_gun(target_gun: String):
+func give_gun(target_gun: String, set_ammo: bool = true):
 	if gun_controller.get_child_count() > gun_controller.base_child_count:
 		if gun_controller.get_child(gun_controller.base_child_count):
 			gun_controller.get_child(gun_controller.base_child_count).queue_free()
@@ -331,6 +413,8 @@ func give_gun(target_gun: String):
 		gun = load(path).instantiate()
 		equipped_gun = target_gun
 		gun_controller.add_child(gun)
+		if set_ammo:
+			gun.ammo = gun.max_ammo
 
 func give_rand_gun():
 	var guns = GunManager.GUNS.keys()
@@ -343,17 +427,10 @@ func _hit_by_bullet(hit):
 		randf_range(-1, 1),
 		randf_range(-1, 1)
 	) / 2
-	health -= randf_range(0.01, 0.05)
-	if hit == $Head:
-		GLOBAL.playsound(GLOBAL.randsfx(SFX_FLESH_HIT), 50.0, 1.0, "Master")
-		hud.get_node("Blackout").modulate.a = 1.0
-		await get_tree().create_timer(0.05).timeout
-		health = 0.0
-		if health <= 0.0:
-			GLOBAL.player_fatal_hit = "head"
-	elif hit == $Body:
-		if health <= 0.0:
-			GLOBAL.player_fatal_hit = "body"
+	health._hit_by_bullet(hit)
 
 func reload_anim(animation: String):
 	anim.play(animation + "_" + GunManager.GUNS[equipped_gun]["id"])
+
+func update_gun():
+	gun = gun_controller.get_child(gun_controller.base_child_count)

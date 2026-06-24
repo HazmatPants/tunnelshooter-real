@@ -6,7 +6,6 @@ extends BasePistol
 var slide_base_pos: Vector3
 
 func _ready() -> void:
-	ammo = max_ammo
 	slide_base_pos = slide.position
 	plus_one = false
 	recoil_amount = 0.1
@@ -18,7 +17,6 @@ func _ready() -> void:
 	bullet_penetration = 5.0
 
 	max_ammo = 8
-	ammo = max_ammo
 
 	sfx_shoot = preload("res://assets/audio/sfx/weapons/caliber/45_crack.wav")
 	sfx_crack = preload("res://assets/audio/sfx/weapons/caliber/45_shoot.wav")

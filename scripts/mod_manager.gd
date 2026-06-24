@@ -38,7 +38,7 @@ func load_mods():
 func load_mod(mod_path: String):
 	var manifest_path = mod_path.path_join("manifest.json")
 	if FileAccess.file_exists(manifest_path):
-		var file_contents = FileAccess.open(manifest_path, FileAccess.READ).get_as_text(true)
+		var file_contents = FileAccess.open(manifest_path, FileAccess.READ).get_as_text()
 		var manifest = JSON.parse_string(file_contents)
 		if manifest is Dictionary:
 			if manifest.has("id"):

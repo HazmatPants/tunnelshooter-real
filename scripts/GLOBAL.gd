@@ -19,14 +19,14 @@ func init():
 	await player.ready
 	initialized.emit()
 
-func playsound(stream: AudioStream, volume_linear: float=1.0, pitch_scale: float=1.0, bus: String="SFX"):
+func playsound(stream: AudioStream, volume_linear: float=1.0, pitch_scale: float=1.0, bus: String="SFX", time: float=0.0):
 	var ap = AudioStreamPlayer.new()
 	ap.stream = stream
 	ap.volume_linear = volume_linear
 	ap.pitch_scale = pitch_scale
-	ap.autoplay = true
 	ap.bus = bus
 	get_tree().current_scene.add_child(ap)
+	ap.play(time)
 	ap.finished.connect(ap.queue_free)
 
 func playsound3d(stream: AudioStream, global_position: Vector3, volume_linear: float=1.0, pitch_scale: float=1.0, bus: String="SFX"):

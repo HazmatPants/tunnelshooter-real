@@ -5,10 +5,14 @@ var crosshair_size: float = 512.0
 
 var sine_time: float = 0.0
 
+var health: Node
+
 func _process(delta: float) -> void:
+	if GLOBAL.player:
+		health = GLOBAL.player.health
 	if not GLOBAL.player: return
 	var inspecting = GLOBAL.player.gun_controller.inspecting
-	if GLOBAL.player.gun != null:
+	if GLOBAL.player.equipped_gun != "" and GLOBAL.player.gun:
 		var gun = GLOBAL.player.gun
 		var equipped_gun = GLOBAL.player.equipped_gun
 		var title_text := ""
@@ -43,11 +47,13 @@ func _process(delta: float) -> void:
 			ray_point = ray.to_global(ray.target_position)
 		var crosshair_target = GLOBAL.player.camera.unproject_position(ray_point)
 		if GLOBAL.player.gun_controller.reloading:
-			crosshair_target = DisplayServer.window_get_size(0) / 2
+			crosshair_target = DisplayServer.window_get_size(0) / 2.0
 		crosshair.global_position = crosshair.global_position.lerp(crosshair_target, 0.2)
 
-
 	if Input.is_action_pressed("rmb") and not GLOBAL.player.gun_controller.reloading:
+		crosshair_alpha = 0.0
+
+	if GLOBAL.player.equipped_gun == "" or GLOBAL.player.holstering:
 		crosshair_alpha = 0.0
 
 	var crosshair_tex = $Crosshair/TextureRect
@@ -76,7 +82,7 @@ func _process(delta: float) -> void:
 
 	$DamageOverlay.texture.gradient.set_offset(0, 1.0 - (pain_sine * mod))
 	$DamageOverlay.modulate.a = 1.0 - GLOBAL.player.health_percent
-	$Blackout.modulate.a = lerp($Blackout.modulate.a, 1.0 - GLOBAL.player.health_percent, 0.05)
+	$Blackout.modulate.a = lerp($Blackout.modulate.a, 1.0 - health.consciousness, 0.05)
 
 func show_notif(text: String, duration: float=3.0):
 	var label = Label.new()

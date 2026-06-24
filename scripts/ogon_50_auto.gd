@@ -8,4 +8,3 @@ func _ready() -> void:
 	trigger_time = 0.15
 
 	max_ammo = 12
-	ammo = max_ammo

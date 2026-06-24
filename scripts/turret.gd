@@ -34,7 +34,7 @@ func _process(delta: float) -> void:
 		return
 
 	if state == "shoot":
-		target_position = GLOBAL.player.get_node("Body").global_position + (GLOBAL.player.velocity / 4)
+		target_position = GLOBAL.player.get_node("Abdomen").global_position + (GLOBAL.player.velocity / 4)
 		target_rotation = global_transform.looking_at(target_position).basis.get_euler()
 
 	if state == "idle":
@@ -135,7 +135,7 @@ func shoot(ray, bullet_energy, penetration_power):
 		if not get_tree(): break
 		var to = origin + direction * 1000.0
 		var query = PhysicsRayQueryParameters3D.create(origin, to)
-		query.exclude = [self]
+		query.exclude = [self, GLOBAL.player.get_rid()]
 		query.collide_with_areas = true
 
 		var hit = get_world_3d().direct_space_state.intersect_ray(query)
@@ -227,10 +227,10 @@ func spawn_casing(tx: Transform3D, dir):
 	casing.casing_ready()
 
 func can_see_player(player: Node3D) -> bool:
-	var view_distance := 30.0
+	var view_distance := 100.0
 	var view_angle := 100.0
 
-	var player_pos = player.global_position
+	var player_pos = player.get_node("Thorax").global_position
 
 	var to_player = player_pos - xpivot.global_position
 	if to_player.length() > view_distance:
@@ -254,10 +254,13 @@ func can_see_player(player: Node3D) -> bool:
 	if result.is_empty():
 		return true
 
-	return result.collider.owner == player
+	var can_see: bool = result.collider.owner == player or result.collider == player
+
+	return can_see
 
 func _hit_by_bullet(_hit):
 	if functional:
+		ap_alarm.playing = false
 		var tween = xpivot.create_tween()
 		tween.set_ease(Tween.EASE_OUT)
 		tween.set_trans(Tween.TRANS_BOUNCE)

@@ -6,4 +6,3 @@ func _ready() -> void:
 	gunpunch = 0.1
 
 	max_ammo = 30
-	ammo = max_ammo

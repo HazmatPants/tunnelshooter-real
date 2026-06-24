@@ -4,7 +4,9 @@ extends Node3D
 @onready var ray: RayCast3D = $RayCast3D
 @onready var anim: AnimationPlayer = $AnimationPlayer
 
+@export var reload_position := Vector3(0.2, 0.0, -0.1)
 var full_auto: bool = false
+var has_stock: bool = false
 var plus_one: bool = true
 var recoil_amount: float = 0.1
 var recoil_recovery: float = 0.6
@@ -14,6 +16,8 @@ var gunpunch: float = 0.33
 var bullet_energy: float = 20.0
 var bullet_penetration: float = 5.0
 var ads_speed: float = 0.2
+var hip_distance: float = -0.2
+var ads_distance: float = -0.5
 
 var max_ammo: int = 12
 var ammo: int = 0

@@ -632,6 +632,7 @@ height = 0.5
 
 [node name="Static RC" type="Node3D"]
 script = ExtResource("1_dir13")
+reload_position = Vector3(0.6, 0, -0.2)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -639,23 +640,23 @@ libraries = {
 }
 
 [node name="CasingPos" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07263157, 0.06933448, -0.07033517)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07263157, 0.06933448, -0.60384953)
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04735282, -1.1470066)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04735282, -1.680521)
 target_position = Vector3(0, 0, -100)
 collide_with_areas = true
 
 [node name="RearGrip" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.04612455, 0, 0, 0, 0.11496807, 0.011024596, 0, -0.020271976, 0.06252358, 0, -0.1570298, 0.009605348)
+transform = Transform3D(0.04612455, 0, 0, 0, 0.11496807, 0.011024596, 0, -0.020271976, 0.06252358, 0, -0.1570298, -0.52390903)
 mesh = SubResource("ArrayMesh_vejhb")
 skeleton = NodePath("")
 
 [node name="Foregrip" type="Node3D" parent="."]
-transform = Transform3D(0.09, 0, 0, 0, 0.047, 0, 0, 0, 0.243, 0, -0.028945796, -0.53637046)
+transform = Transform3D(0.09, 0, 0, 0, 0.047, 0, 0, 0, 0.243, 0, -0.028945796, -1.0698848)
 
 [node name="Mesh" type="Node3D" parent="."]
-transform = Transform3D(0.08, 0, 0, 0, 0.08, 0, 0, 0, 0.08, 0, 0.042850405, -0.43795496)
+transform = Transform3D(0.08, 0, 0, 0, 0.08, 0, 0, 0, 0.08, 0, 0.042850405, -0.97146934)
 
 [node name="Torus" type="MeshInstance3D" parent="Mesh"]
 transform = Transform3D(0, -2.283517, 0, 1, 0, 0, 0, 0, 1, 0, -1.439888, 4.334121)

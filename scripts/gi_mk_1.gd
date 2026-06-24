@@ -5,7 +5,6 @@ extends BasePistol
 var slide_base_pos: Vector3
 
 func _ready() -> void:
-	ammo = max_ammo
 	slide_base_pos = slide.position
 
 	recoil_amount = 0.1

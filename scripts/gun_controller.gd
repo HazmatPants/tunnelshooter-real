@@ -11,6 +11,8 @@ extends Node3D
 const MAX_DISTANCE := 5000.0
 const MAX_RICOCHETS := 2
 
+var gun_ammo := {}
+
 var recoil: float = 0.0
 var punch_target := Vector3.ZERO
 
@@ -55,8 +57,9 @@ func place_decal(pos: Vector3, normal: Vector3, collider: Node3D):
 	tween.finished.connect(particles.queue_free)
 
 func _process(_delta: float) -> void:
-	left_hand.visible = !inspecting
-	right_hand.visible = !inspecting
+	var hands_visible = not inspecting and owner.equipped_gun != ""
+	left_hand.visible = hands_visible
+	right_hand.visible = hands_visible
 	if owner.gun and not reloading:
 		if owner.gun.has_node("Foregrip"):
 			left_hand.global_position = left_hand.global_position.lerp(
@@ -72,7 +75,10 @@ func _process(_delta: float) -> void:
 			owner.gun.get_node("RearGrip").global_position,
 			0.4
 		)
-			
+
+	left_hand_pos.position = owner.camera.position + Vector3(-0.5, -1.0, 0.0)
+	right_hand_pos.position = owner.camera.position + Vector3(0.5, -1.0, 0.0)
+
 	left_hand.look_at(left_hand_pos.global_position)
 	right_hand.look_at(right_hand_pos.global_position)
 
